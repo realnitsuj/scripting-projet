@@ -5,7 +5,7 @@
 - [ ] Voir comment envoyer les mails avec mutt
 - [ ] Faire un serveur depuis lequel
   - on peut récupérer le fichier sql
-  - on pousser l'archive une les opérations effectuées
+  - on pousse l'archive une fois les opérations effectuées
 - [ ] Rédiger les rapports
 
 # Rapports
