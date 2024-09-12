@@ -7,10 +7,10 @@
 - [ ] Sur le serveur d'archivage, supprimer les archives plus anciennes qu'une durée renseignée dans la conf
 - [ ] Mettre en place les test suggérés sur MOOTSE
     - [x] Vérifier que l'URL existe
-    - [ ] Vérifier que le zip a bien été téléchargé
+    - [x] Vérifier que le zip a bien été téléchargé
     - [ ] Vérifier que le zip contient bien le fichier attendu
     - [x] Vérifier que le SQL n'est pas la même que la veille
-    - [ ] Vérifier la connexion avec le serveur de destination
+    - [x] Vérifier la connexion avec le serveur de destination
     - [ ] Vérifier que le transfert a bien fonctionné
 - [ ] Rédiger les rapports
 

@@ -33,6 +33,8 @@ abstract: À voir si on met un abstract
 
 Cron blablabla
 
+Il ne faut rien ajouter dans le dossier pour le bon fonctionnement du script. De plus, l'archive renseignée doit contenir uniquement le dump SQL, sans sous-dossier ni autres fichiers.
+
 # Configuration
 
 Ce script est entièrement configurable via les variables présentes dans le fichier `archive.conf`.
