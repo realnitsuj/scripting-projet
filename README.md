@@ -6,6 +6,7 @@
 - [ ] Faire un serveur depuis lequel
   - on peut récupérer le fichier sql
   - on pousse l'archive une fois les opérations effectuées
+- [ ] Sur le serveur d'archivage, supprimer les archives plus anciennes qu'une durée renseignée dans la conf
 - [ ] Rédiger les rapports
 
 # Rapports
