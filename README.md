@@ -1,5 +1,5 @@
-- [ ] Voir pour SQL dump
-- [ ] Créer les logs à chaque exécution
+- [x] Voir pour SQL dump
+- [x] Créer les logs à chaque exécution
 - [ ] Voir comment envoyer les mails avec mutt
 - [x] Faire un serveur depuis lequel
   - on peut récupérer le fichier sql
