@@ -1,5 +1,3 @@
-# scripting-projet
-
 - [ ] Voir pour SQL dump
 - [ ] Créer les logs à chaque exécution
 - [ ] Voir comment envoyer les mails avec mutt
@@ -7,7 +5,21 @@
   - on peut récupérer le fichier sql
   - on pousse l'archive une fois les opérations effectuées
 - [ ] Sur le serveur d'archivage, supprimer les archives plus anciennes qu'une durée renseignée dans la conf
+- [ ] Mettre en place les test suggérés sur MOOTSE
+    - [ ] Vérifier que l'URL existe
+    - [ ] Vérifier que le zip a bien été téléchargé
+    - [ ] Vérifier que le zip contient bien le fichier attendu
+    - [ ] Vérifier que le SQL n'est pas la même que la veille
+    - [ ] Vérifier la connexion avec le serveur de destination
+    - [ ] Vérifier que le transfert a bien fonctionné
 - [ ] Rédiger les rapports
+
+# Structure
+
+- `archive.sh` : le script principal
+- `archive.conf` : le fichier de configuration
+- `archive.log` : les journaux de l'utilitaire
+- `.prevChecksum` : la somme de contrôle de fichier de la veille
 
 # Rapports
 
