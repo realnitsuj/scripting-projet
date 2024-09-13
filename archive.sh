@@ -27,9 +27,14 @@ function envoyerMail() {
 
 
 # Ménage sur le serveur d'archivage
-#sftp "$usernameSSH@$adresseArchivage"; find "$pathSSH" -type f -ctime 0 -exec rm '{}' \;; bye
+if ! ssh "$usernameSSH@$adresseArchivage" "find $pathSSH -type f -ctime $dureeConservation -exec rm '{}' \; && exit"; then
 
-
+    echo "Impossible d'accéder au serveur d'archivage."
+    ecrireLog 1 "" "impossible d'accéder au serveur d'archivage rensigné via SSH, vérifier les configurations."
+    # mail
+    exit 1
+    
+fi
 
 # Vérifier si l'URL existe
 if ! wget -q "$archiveURL"; then
@@ -55,7 +60,14 @@ fi
 rm -f ./*.zip
 
 # Stocker la somme de contrôle du nouveau dump
-currentChecksum=$(sha256sum ./*.sql | cut -d ' ' -f1)
+if ! currentChecksum=$(sha256sum ./*.sql | cut -d ' ' -f1); then
+
+    echo "Fichier SQL non trouvé, vérifier la structure de l'archive fournie, ou la présence de la fonction \`sha256sum\`."
+    ecrireLog 1 "" "fichier SQL non trouvé, ou \`sha256sum\` inaccessible."
+    exit 1
+
+fi
+
 
 # Si la sauvegarde de somme de contrôle n'existe pas, la créer
 [[ -f .prevChecksum ]] || touch .prevChecksum
