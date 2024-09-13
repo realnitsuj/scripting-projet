@@ -26,3 +26,8 @@
 Deux rapports à faire : une doc utilisateur et une doc technique. Pour la syntaxe markdown, j'utilise Pandoc pour convertir après, voir [la doc](https://pandoc.org/MANUAL.html) et pour [l'installer](https://pandoc.org/installing.html).
 
 Pour faire des schémas propre (notamment si on veut faire un truc pour les serveurs), [PlantUML](https://plantuml.com/fr/) c'est hyper cool.
+
+# Sources
+
+- Pour authentification SSH par clé : <https://www.cyberciti.biz/tips/ssh-public-key-based-authentication-how-to.html>
+- 
