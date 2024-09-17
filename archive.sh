@@ -15,12 +15,18 @@ function ecrireLog() {
     fi
 }
 
-## Fonction d'envoi de mail
+## TODO Fonction d'envoi de mail
+# $1 : succès (0) / échec (1)
+# $2 : si échec, corps du message
 function envoyerMail() {
-    
-    # TODO
-    true;
+    if [[ $1 -eq 0 ]]; then
+	echo "L'opération d'archivage de ce jour est un succès." | mail -n $([[ "$joindreLog" -eq 2 ]] && echo "-a $emplacementLog ") -- justin
+	echo mail
+    else
+	echo "idem"
+    fi
 
+    [[ $? -ne 0 ]] && echo "Échec lors de l'envoi du mail."
 }
 
 
@@ -109,6 +115,7 @@ echo "$currentChecksum" > .prevChecksum
 ecrireLog 0 "$currentChecksum"
 
 # Mail de succès
+envoyerMail 0
 
 exit 0
 
