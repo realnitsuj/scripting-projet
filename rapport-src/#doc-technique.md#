@@ -29,5 +29,12 @@ author:
 
 # Justification des choix techniques
 
+## Envoi de mails
+
+Pour configurer l'envoi des mails, il faut mettre en place les services suivants :
+
+- `mailutils` ou `mutt` : pour l'interaction avec l'utilisateur, envoyer et lire des mail
+- `sendmail`
+
 ## Serveur Web
 
