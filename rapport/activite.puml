@@ -1,0 +1,65 @@
+@startuml
+
+'!pragma useVerticalIf on
+skinparam ConditionEndStyle hline
+
+start
+note right: Importer la configuration
+
+if (**Supprimer** les fichiers trop anciens
+du serveur d'archivage) then (Échec)
+    :Écrire logs, impossible d'accéder
+    au serveur d'archivage;
+    :Envoyer mail;
+    end
+elseif (**Télécharger** l'archive) then (Échec)
+    :Écrire logs, impossible d'accéder
+    à l'archive;
+    :Envoyer mail;
+    end
+elseif (**Décompresser** l'archive) then (Échec)
+    :Écrire logs, impossible de
+    décompresser l'archive;
+    :Envoyer mail;
+    end
+elseif (Un seul fichier SQL dans l'archive ?) then (Non)
+    :Écrire logs, mauvaise structure
+    d'archive;
+    :Envoyer mail;
+    end
+endif
+
+:Supprimer l'archive zip;
+
+if (**Calculer** la somme de contrôle du fichier) then (Échec)
+    :Écrire logs, impossible de
+    calculer la somme de contrôle;
+    :Envoyer mail;
+    end
+elseif (La somme de contrôle est
+la même que précédemment ?) then (Oui)
+    :Écrire logs, le fichier est
+    le même qu'à la dernière sauvegarde;
+    :Envoyer mail;
+    end
+(Non) elseif (**Archiver** le nouveau dump) then (Échec)
+    :Écrire logs, impossible
+    d'archiver le dump;
+    :Envoyer mail;
+    end
+elseif (**Copier** la sauvegarde sur
+le serveur d'archivage) then (Échec)
+    :Écrire logs, impossible d'accéder
+    au serveur d'archivage;
+    :Envoyer mail;
+    end
+endif
+
+:Supprimer l'archive locale;
+:Actualiser la somme de contrôle sauvegardée;
+:Écrire le log de succès;
+:Envoyer le mail de succès;
+
+stop
+
+@enduml
