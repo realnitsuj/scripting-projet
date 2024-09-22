@@ -22,10 +22,9 @@ function ecrireLog() {
 # $1 : succès (0) / échec (1)
 # $2 : si échec, corps du message
 function envoyerMail() {
-    if [[ $1 -eq 0 ]]; then
-	echo "L'opération d'archivage de ce jour est un succès." | mail -n $([[ "$joindreLog" -eq 2 ]] && echo "-a $emplacementLog ") -- justin
-	echo mail
-    else
+    if [[ $1 -eq 0 && $envoyerMail -eq 2 ]]; then
+	echo "L'opération d'archivage de ce jour est un succès." | mutt -n -s "$objSucces" "$([[ $joindreLog -eq 2 ]] && echo -a $emplacementLog )"-- "$(echo "${mailDestinataires[*]}")"
+    elif [[ $envoyerMail -eq 1 ]]; then
 	echo "idem"
     fi
 
@@ -35,7 +34,7 @@ function envoyerMail() {
 
 ###############################################
 # Ménage sur le serveur d'archivage
-if ! ssh "$usernameSSH@$adresseArchivage" "find $pathSSH -name "*.tgz" -type f -ctime +$dureeConservation -exec rm '{}' \; && exit"; then
+if ! ssh "$usernameSSH@$adresseArchivage" "find $pathSSH -name *.tgz -type f -ctime +$dureeConservation -exec rm '{}' \; && exit"; then
     ecrireLog 1 "" "impossible d'accéder au serveur d'archivage renseigné via SSH, vérifier la configuration."
     # mail
     exit 1
