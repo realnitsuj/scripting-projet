@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Importer le fichier de configuration
-. "./archive.conf"
+source "./archive.conf"
 
 
 ###############################################
@@ -22,15 +22,31 @@ function ecrireLog() {
 # $1 : succès (0) / échec (1)
 # $2 : si échec, corps du message
 function envoyerMail() {
-    if [[ $1 -eq 0 && $envoyerMail -eq 2 ]]; then
-	echo "L'opération d'archivage de ce jour est un succès." | mutt -n -s "$objSucces" "$([[ $joindreLog -eq 2 ]] && echo -a $emplacementLog )"-- "$(echo "${mailDestinataires[*]}")"
-    elif [[ $envoyerMail -eq 1 ]]; then
-	echo "idem"
+    if [[ ${#mailDestinataires[*]} -ne 0 && (($1 -eq 1 && $envoyerMail -ne 0) || ($1 -eq 0 && $envoyerMail -eq 2)) ]]; then
+
+	if [[ $muttrcUtilisateur -eq 0 ]]; then
+	    echo "$([[ $1 -eq 0 ]] && echo L\'opération de ce jour est un succès || echo $2)" | \
+		mutt -x \
+		     -s "$([[ $1 -eq 0 ]] && echo $objSucces || echo $objEchec)" \
+		     "$([[ ($1 -eq 0 && $joindreLog -eq 2) || ($1 -eq 1 && $joindreLog -eq 1)]] && echo -a $emplacementLog --)" \
+		     "$(echo ${mailDestinataires[*]})"
+	    
+	else
+	    echo "$([[ $1 -eq 0 ]] && echo L\'opération de ce jour est un succès || echo $2)" | \
+		mutt -nx \
+		     -e "set from = \"$mailEnvoyeur\"" \
+		     -e "set smtp_pass = \"$motDePasse\"" \
+		     -e "set smtp_url = \"smtps://$mailEnvoyeur@$serveurHote:$port\"" \
+		     -s "$([[ $1 -eq 0 ]] && echo $objSucces || echo $objEchec)" \
+		     "$([[ ($1 -eq 0 && $joindreLog -eq 2) || ($1 -eq 1 && $joindreLog -eq 1)]] && echo -a $emplacementLog --)" \
+		     "$(echo ${mailDestinataires[*]})"
+	fi
+	
     fi
 
+    # TODO : écrire dans les logs en cas d'échec, sans interrompre le programme (car il l'est par ailleurs dans tous les cas)
     [[ $? -ne 0 ]] && echo "Échec lors de l'envoi du mail."
 }
-
 
 ###############################################
 # Ménage sur le serveur d'archivage
