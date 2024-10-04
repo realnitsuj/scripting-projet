@@ -1,22 +1,6 @@
 ---
-documentclass: article
-geometry:
-- top=2cm
-- right=2cm
-- bottom=2cm
-- left=2cm
-papersize: a4
-fontsize: 12pt
-toc: true
-numbersections: true
-linkcolor: blue
-lang: fr-FR
-
 title: Utilitaire d'archivage
 subtitle: Documentation technique
-author:
-- Justin Bossard
-- Antoine Feuillette
 ---
 
 # Utilisation des variables
