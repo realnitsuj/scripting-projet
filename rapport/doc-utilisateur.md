@@ -18,7 +18,7 @@ On considère un système GNU/Linux muni des commandes de bases, donc avec [`GNU
 - [`unzip`](https://infozip.sourceforge.net/UnZip.html) : pour extraire le dump SQL de l'archive
 - [`tar`](https://www.gnu.org/software/tar/) : pour créer la nouvelle archive
 - [`OpenSSH`] : en client uniquement, pour communiquer avec le serveur de sauvegarde
-- [`Mutt`](http://www.mutt.org/) : pour communiquer par mail. Si la fonctionnalité de mail est désactivé, cette dépendance peut-être omise.
+- [`Mutt`](http://www.mutt.org/) : pour communiquer par mail. Si la fonctionnalité de mail est désactivé, cette dépendance peut-être omise
 
 ## Serveur d'archivage
 
@@ -103,15 +103,26 @@ Ce script est entièrement configurable via les variables présentes dans le fic
 
 Ces options n'auront aucune incidence si `muttrcUtilisateur=0`.
 
-``
+`serveurHote`
+:   Serveur SMTP qui gère l'envoi de mails.
 
-***
+`port`
+:   Port sur lequel contacter le serveur. En général, on a :
+
+    - `25` : sans chiffrement
+	- `465` : chiffrement implicite (TLS/SSL)
+	- `587` : chiffrement explicite (STARTTLS)
+
+`mailEnvoyeur`
+:   Mail envoyeur des informations de l'utilitaire, enregistré sur le serveur renseigné dans `serveurHote`.
+
+`motDePasse`
+:   Mot de passe associé au mail pour s'identifier sur `serveurHote`.
+
 
 # Configuration de l'environnement
 
 ## Configuration du SSH pour une exécution en autonomie {#ssh}
-
-Pour plus d'informations : <https://www.cyberciti.biz/tips/ssh-public-key-based-authentication-how-to.html>.
 
 Pour une exécution entièrement autonome, il est nécessaire d'authentifier sa machine par clés SSH auprès du serveur d'archivage. Pour cela, depuis la machine sur laquelle on va exécuter le script :
 
@@ -122,6 +133,8 @@ Pour une exécution entièrement autonome, il est nécessaire d'authentifier sa 
 2. `ssh-copy-id -i ~/.ssh/id_rsa.pub $username@$ip`{.bash}
 
    Avec `$username`{.bash} le nom d'utilisateur sur le serveur d'archivage et `$ip`{.bash} l'adresse IP du serveur. Le mot de passe de l'utilisateur du serveur doit être renseigné.
+   
+Suite à cela, la connexion au serveur via SSH pour l'utilisateur concerné ne devrait plus nécessiter de mot de passe pour la machine cliente.
 
 ## Configuration du Cron pour une exécution quotidienne
 
@@ -131,3 +144,4 @@ Pour exécuter le script tous les jours à 3h00, avec un cron déjà configuré,
 0 3 * * * /path/to/archive.sh
 ```
 
+Avec `/path/to/archive.sh` le chemin vers le script.

@@ -1,11 +1,26 @@
 ---
 title: Utilitaire d'archivage
-subtitle: Documentation technique
+subtitle: Mémoire technique
 ---
 
+\newpage
 # Utilisation des variables
 
-# Organisation du script
+# Organisation
+
+## Fichiers
+
+On a l'organisation suivante pour les fichiers :
+
+```
+.
+|- archive.sh      # Script
+|- archive.conf    # Fichier de configuration
+|- archive.log     # Logs du script, possibilité de modifier l'emplacement
+|- .prevChecksum   # Somme de contrôle du précédent fichier
+```
+
+## Script
 
 # Principe de fonctionnement
 
@@ -17,10 +32,9 @@ subtitle: Documentation technique
 
 ## Envoi de mails
 
-Pour configurer l'envoi des mails, il faut mettre en place les services suivants :
+Pour configurer l'envoi des mails, on utilise mutt :
 
 - `mailutils` ou `mutt` : pour l'interaction avec l'utilisateur, envoyer et lire des mail
-- `sendmail`
 
 ## Serveur Web
 

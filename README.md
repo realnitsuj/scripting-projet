@@ -1,6 +1,6 @@
 - [x] Voir pour SQL dump
 - [x] Créer les logs à chaque exécution
-- [ ] Voir comment envoyer les mails avec mutt
+- [x] Voir comment envoyer les mails avec mutt
 - [x] Faire un serveur depuis lequel
   - on peut récupérer le fichier sql
   - on pousse l'archive une fois les opérations effectuées
@@ -13,6 +13,13 @@
     - [x] Vérifier la connexion avec le serveur de destination
     - [x] Vérifier que le transfert a bien fonctionné
 - [ ] Rédiger les rapports
+    - [ ] Mémoire technique
+        - [ ] Diagramme d'activité
+        - [ ] Schéma pour les serveurs
+        - [ ] Le reste
+    - [ ] Documentation utilisateur
+        - [ ] Voir si on détaille plus sur le Cron
+        - [x] Le reste
 
 # Structure
 
