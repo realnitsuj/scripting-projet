@@ -1,6 +1,5 @@
 ---
-title: Utilitaire d'archivage
-subtitle: Documentation utilisateur
+title: Documentation utilisateur
 ---
 
 <!--Lien par références :-->
@@ -28,7 +27,7 @@ Le serveur d'archivage doit également être un système GNU/Linux muni de [`GNU
 
 Pour exécuter le script, il faut lui donner les bonnes permissions (`chmod +x /path/to/archive.sh`{.bash}), puis l'exécuter (`/path/to/archive.sh`{.bash}). À chaque exécution, il faut saisir deux fois le mot de passe de l'utilisateur SSH renseigné dans la configuration. Pour que le script soit totalement autonome, voir [plus loin](#ssh).
 
-Le script est configurable via le fichier `archive.conf`, voir la [section suivante](#configuration) pour plus de détails.
+Le script est configurable via le fichier `archive.conf`, voir la section suivante pour plus de détails.
 
 *Il ne faut rien ajouter dans le dossier pour le bon fonctionnement du script*.  
 De plus, l'archive renseignée doit contenir uniquement le dump SQL, sans sous-dossier ni autres fichiers.
@@ -45,7 +44,7 @@ Ce script est entièrement configurable via les variables présentes dans le fic
     Par défaut sur `./archive.log`.
 
 `logStdout`
-:   En cas d'échec, redirige le motif à la sortie standard (0) ou pas (1).
+:   En cas d'échec, redirige le motif à la sortie standard (`0`) ou pas (`1`).
 
     Par défaut sur `0`.
 
