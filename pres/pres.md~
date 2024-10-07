@@ -1,0 +1,176 @@
+---
+title: Soutenance de stage
+subtitle: 2iT solutions
+author: Justin Bossard
+date: 26 juin 2024
+lang: fr-FR
+title-slide-attributes:
+    data-background-image: fond.jpg
+slideNumber: true
+controls: false
+---
+
+# Présentation entreprise {background-image="bilan.jpg"}
+
+## ![](logo.png)
+
+- Entreprise d'infogérance
+- Siège social à Saint-Étienne, stage effectué à Dommartin (Rhône)
+- \~ 65 employés
+- \~ 4000 clients
+- Filiale de Koesio : \~ 3500 employés
+
+::: notes
+
+Tuteur anciennement chez Creatys, petite structure
+
+:::
+
+## Organisation
+
+3 services :
+
+- Informatique
+- Impression
+- Télécom
+
+::: notes
+
+Stage au service info
+
+Travail en étroite collaboration
+
+:::
+
+## Méthodologie gestion de problème
+
+::: incremental
+
+1. Détection du problème
+2. Création DIT sur **Artis**, dans la catégorie associée
+3. Intervention
+    - Si technicien assigné, il essaye de résoudre le problème
+    - Si pas de technicien, le service concerné gère dès que possible
+4. Rapport d'intervention sur Artis, et fermeture ou non de la DIT
+
+:::
+
+::: notes
+
+Détection via outils de surveillance ou appel du client
+
+:::
+
+
+# Travail réalisé {background-image="travail.jpg"}
+
+## Missions réalisées
+
+::: incremental
+
+- Analyse et mise en place Centrex 3CX
+- Gestion KPAX et support téléphonique
+- Maintenance systèmes / serveurs Windows et systèmes de téléphonie
+- Première préparation / premier paramétrage PC
+- Observation lors d'intervention techniques
+
+:::
+
+
+::: notes
+
+- voir niveau toner client
+- eg : clonage et changement disque dur PC cassé
+
+:::
+
+## Mission détaillée : serveur 3CX {background-image="phone.jpg"}
+
+::: notes
+
+Détaillée dans mon rapport
+
+3 parties : analyse du besoin, mise en place, bilan
+
+:::
+
+### Analyse du besoin
+
+Lien avec clients essentiel pour entreprises → standard téléphonique
+
+Réseau téléphonique public : abandon RTC
+
+Commutation très utile pour entreprises, avec technologies modernes (IPBX)
+
+::: notes
+
+Rapide historique : standard permet de relier 2 lignes entre elles (physiquement)
+
+Internet : lien uniquement virtuel
+
+:::
+
+### Présentation de la technologie
+
+Plusieurs solutions : opérateurs traditionnels, entreprises spécialisées, solutions open-source
+
+Choix de 3CX :
+
+- rapide à mettre en place
+- programmable
+- économique
+
+***
+
+#### Fonctionnalités
+
+- téléphonie : appels audio/vidéo, mise en attente, transfert d'appel, conférence, statuts...
+- chat interne et externe (SMS/MMS, WhatsApp, Facebook)
+- annuaire partagé
+- intégration CRM (MS 365)
+
+Trunk SIP au choix
+
+::: notes
+
+Détaillé à l'écrit
+
+Intéressant : beaucoup plus de possilités qu'avec téléphonie classiques, tant internes qu'externes
+
+:::
+
+### Bilan
+
+- Avantages : économique et outil de communication complet
+- Inconvénient : personne formée ou prestataire
+
+Évolution des technologies, standard comme \[matrix\] pourrait être adopté
+
+# Bilan personnel {background-image="papeterie.jpg"}
+
+## Apports
+
+### Savoir-faire
+
+- Connaissances spécifiques sur outils de l'entreprise
+- 3CX et téléphonie plus généralement
+    - comment mettre en place un Centrex
+    - comment fonctionne la téléphonie (en surface)
+- S'organiser avec efficacité
+
+### Savoir-être
+
+- Contact client développé
+- Plus à l'aise au téléphone
+- S'exprimer de manière claire et appropriée
+- Savoir écouter
+
+## Appréciation
+
+Recherche documentaire et mise en place technique très intéressantes
+
+Ambiance de travail agréable
+
+# {background-image="color.jpg"}
+
+Merci de votre attention
