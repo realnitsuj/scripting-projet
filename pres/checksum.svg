@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN" "http://www.w3.org/TR/2001/PR-SVG-20010719/DTD/svg10.dtd">
+<svg width="30cm" height="17cm" viewBox="318 118 595 325" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g>
+    <rect style="fill: #ffffff" x="320" y="120" width="272" height="53"/>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #7f7f7f" x1="374.4" y1="120" x2="374.4" y2="173"/>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #7f7f7f" x1="428.8" y1="120" x2="428.8" y2="173"/>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #7f7f7f" x1="483.2" y1="120" x2="483.2" y2="173"/>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #7f7f7f" x1="537.6" y1="120" x2="537.6" y2="173"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="320" y="120" width="272" height="53"/>
+  </g>
+  <text style="fill: #000000;text-anchor:start;font-size:12.8;font-family:sanserif;font-style:normal;font-weight:normal" x="456" y="146.5">
+    <tspan x="456" y="146.5"></tspan>
+  </text>
+  <text style="fill: #000000;text-anchor:middle;font-size:28.2222;font-family:DejaVu Serif;font-style:normal;font-weight:normal" x="347.2" y="156.25">
+    <tspan x="347.2" y="156.25">H</tspan>
+  </text>
+  <text style="fill: #000000;text-anchor:middle;font-size:28.2222;font-family:DejaVu Serif;font-style:normal;font-weight:normal" x="401.6" y="156.25">
+    <tspan x="401.6" y="156.25">e</tspan>
+  </text>
+  <text style="fill: #000000;text-anchor:middle;font-size:28.2222;font-family:DejaVu Serif;font-style:normal;font-weight:normal" x="564.8" y="156.25">
+    <tspan x="564.8" y="156.25">o</tspan>
+  </text>
+  <text style="fill: #000000;text-anchor:middle;font-size:28.2222;font-family:DejaVu Serif;font-style:normal;font-weight:normal" x="510.4" y="156.25">
+    <tspan x="510.4" y="156.25">l</tspan>
+  </text>
+  <text style="fill: #000000;text-anchor:middle;font-size:28.2222;font-family:DejaVu Serif;font-style:normal;font-weight:normal" x="456" y="156.25">
+    <tspan x="456" y="156.25">l</tspan>
+  </text>
+  <g>
+    <rect style="fill: #ffffff" x="319.9" y="239.6" width="272" height="53"/>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #7f7f7f" x1="374.3" y1="239.6" x2="374.3" y2="292.6"/>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #7f7f7f" x1="428.7" y1="239.6" x2="428.7" y2="292.6"/>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #7f7f7f" x1="483.1" y1="239.6" x2="483.1" y2="292.6"/>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #7f7f7f" x1="537.5" y1="239.6" x2="537.5" y2="292.6"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="319.9" y="239.6" width="272" height="53"/>
+  </g>
+  <text style="fill: #000000;text-anchor:middle;font-size:25.9644;font-family:DejaVu Serif;font-style:normal;font-weight:normal" x="347.1" y="275.1">
+    <tspan x="347.1" y="275.1">48</tspan>
+  </text>
+  <text style="fill: #000000;text-anchor:middle;font-size:25.9644;font-family:DejaVu Serif;font-style:normal;font-weight:normal" x="401.5" y="275.1">
+    <tspan x="401.5" y="275.1">65</tspan>
+  </text>
+  <text style="fill: #000000;text-anchor:middle;font-size:25.9644;font-family:DejaVu Serif;font-style:normal;font-weight:normal" x="455.9" y="275.1">
+    <tspan x="455.9" y="275.1">6C</tspan>
+  </text>
+  <text style="fill: #000000;text-anchor:middle;font-size:25.9644;font-family:DejaVu Serif;font-style:normal;font-weight:normal" x="510.3" y="275.1">
+    <tspan x="510.3" y="275.1">6C</tspan>
+  </text>
+  <text style="fill: #000000;text-anchor:middle;font-size:25.9644;font-family:DejaVu Serif;font-style:normal;font-weight:normal" x="564.7" y="275.1">
+    <tspan x="564.7" y="275.1">6F</tspan>
+  </text>
+  <g>
+    <rect style="fill: #ffffff" x="370" y="357" width="173" height="48"/>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #7f7f7f" x1="456.5" y1="357" x2="456.5" y2="405"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #ff0000" x="370" y="357" width="173" height="48"/>
+  </g>
+  <text style="fill: #000000;text-anchor:middle;font-size:25.9644;font-family:DejaVu Serif;font-style:normal;font-weight:normal" x="413.25" y="390">
+    <tspan x="413.25" y="390">F4</tspan>
+  </text>
+  <text style="fill: #000000;text-anchor:middle;font-size:25.9644;font-family:DejaVu Serif;font-style:normal;font-weight:normal" x="499.75" y="390">
+    <tspan x="499.75" y="390">31</tspan>
+  </text>
+  <text style="fill: #000000;text-anchor:start;font-size:11.2889;font-family:sanserif;font-style:normal;font-weight:normal" x="321" y="422.735">
+    <tspan x="321" y="422.735">48 + 65 + 6C + 6C + 6F = F4 mod FF</tspan>
+  </text>
+  <text style="fill: #000000;text-anchor:start;font-size:11.2889;font-family:sanserif;font-style:normal;font-weight:normal" x="320" y="439.735">
+    <tspan x="320" y="439.735">48×1+65×2+6C×3+6C×4+6F×5 = 31 mod FF</tspan>
+  </text>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="456" y1="173" x2="455.915" y2="229.864"/>
+    <polygon style="fill: #000000" points="455.903,237.364 450.918,227.356 455.915,229.864 460.918,227.371 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="455.903,237.364 450.918,227.356 455.915,229.864 460.918,227.371 "/>
+  </g>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="455.9" y1="292.6" x2="456.409" y2="347.264"/>
+    <polygon style="fill: #000000" points="456.479,354.764 451.386,344.811 456.409,347.264 461.386,344.718 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="456.479,354.764 451.386,344.811 456.409,347.264 461.386,344.718 "/>
+  </g>
+  <text style="fill: #000000;text-anchor:start;font-size:19.7556;font-family:DejaVu Serif;font-style:normal;font-weight:normal" x="455.95" y="213.125">
+    <tspan x="455.95" y="213.125"> ASCII</tspan>
+  </text>
+  <text style="fill: #000000;text-anchor:start;font-size:19.7556;font-family:DejaVu Serif;font-style:normal;font-weight:normal" x="456.2" y="331.625">
+    <tspan x="456.2" y="331.625"> Hachage</tspan>
+  </text>
+  <g>
+    <rect style="fill: #ffffff" x="640" y="120" width="272" height="53"/>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #7f7f7f" x1="694.4" y1="120" x2="694.4" y2="173"/>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #7f7f7f" x1="748.8" y1="120" x2="748.8" y2="173"/>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #7f7f7f" x1="803.2" y1="120" x2="803.2" y2="173"/>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #7f7f7f" x1="857.6" y1="120" x2="857.6" y2="173"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="640" y="120" width="272" height="53"/>
+  </g>
+  <text style="fill: #000000;text-anchor:start;font-size:12.8;font-family:sanserif;font-style:normal;font-weight:normal" x="776" y="146.5">
+    <tspan x="776" y="146.5"></tspan>
+  </text>
+  <text style="fill: #000000;text-anchor:middle;font-size:28.2222;font-family:DejaVu Serif;font-style:normal;font-weight:normal" x="667.2" y="156.25">
+    <tspan x="667.2" y="156.25">H</tspan>
+  </text>
+  <text style="fill: #000000;text-anchor:middle;font-size:28.2222;font-family:DejaVu Serif;font-style:normal;font-weight:normal" x="721.6" y="156.25">
+    <tspan x="721.6" y="156.25">e</tspan>
+  </text>
+  <text style="fill: #0000ff;text-anchor:middle;font-size:28.2222;font-family:DejaVu Serif;font-style:normal;font-weight:normal" x="884.8" y="156.25">
+    <tspan x="884.8" y="156.25">a</tspan>
+  </text>
+  <text style="fill: #000000;text-anchor:middle;font-size:28.2222;font-family:DejaVu Serif;font-style:normal;font-weight:normal" x="830.4" y="156.25">
+    <tspan x="830.4" y="156.25">l</tspan>
+  </text>
+  <text style="fill: #000000;text-anchor:middle;font-size:28.2222;font-family:DejaVu Serif;font-style:normal;font-weight:normal" x="776" y="156.25">
+    <tspan x="776" y="156.25">l</tspan>
+  </text>
+  <g>
+    <rect style="fill: #ffffff" x="639.9" y="239.6" width="272" height="53"/>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #7f7f7f" x1="694.3" y1="239.6" x2="694.3" y2="292.6"/>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #7f7f7f" x1="748.7" y1="239.6" x2="748.7" y2="292.6"/>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #7f7f7f" x1="803.1" y1="239.6" x2="803.1" y2="292.6"/>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #7f7f7f" x1="857.5" y1="239.6" x2="857.5" y2="292.6"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="639.9" y="239.6" width="272" height="53"/>
+  </g>
+  <text style="fill: #000000;text-anchor:middle;font-size:25.9644;font-family:DejaVu Serif;font-style:normal;font-weight:normal" x="667.1" y="275.1">
+    <tspan x="667.1" y="275.1">48</tspan>
+  </text>
+  <text style="fill: #000000;text-anchor:middle;font-size:25.9644;font-family:DejaVu Serif;font-style:normal;font-weight:normal" x="721.5" y="275.1">
+    <tspan x="721.5" y="275.1">65</tspan>
+  </text>
+  <text style="fill: #000000;text-anchor:middle;font-size:25.9644;font-family:DejaVu Serif;font-style:normal;font-weight:normal" x="775.9" y="275.1">
+    <tspan x="775.9" y="275.1">6C</tspan>
+  </text>
+  <text style="fill: #000000;text-anchor:middle;font-size:25.9644;font-family:DejaVu Serif;font-style:normal;font-weight:normal" x="830.3" y="275.1">
+    <tspan x="830.3" y="275.1">6C</tspan>
+  </text>
+  <text style="fill: #0000ff;text-anchor:middle;font-size:25.9644;font-family:DejaVu Serif;font-style:normal;font-weight:normal" x="884.7" y="275.1">
+    <tspan x="884.7" y="275.1">61</tspan>
+  </text>
+  <g>
+    <rect style="fill: #ffffff" x="690" y="357" width="173" height="48"/>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #7f7f7f" x1="776.5" y1="357" x2="776.5" y2="405"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #ff0000" x="690" y="357" width="173" height="48"/>
+  </g>
+  <text style="fill: #000000;text-anchor:middle;font-size:25.9644;font-family:DejaVu Serif;font-style:normal;font-weight:normal" x="733.25" y="390">
+    <tspan x="733.25" y="390">E6</tspan>
+  </text>
+  <text style="fill: #000000;text-anchor:middle;font-size:25.9644;font-family:DejaVu Serif;font-style:normal;font-weight:normal" x="819.75" y="390">
+    <tspan x="819.75" y="390">EB</tspan>
+  </text>
+  <text style="fill: #000000;text-anchor:start;font-size:11.2889;font-family:sanserif;font-style:normal;font-weight:normal" x="641" y="422.735">
+    <tspan x="641" y="422.735">48 + 65 + 6C + 6C + 61 = E6 mod FF</tspan>
+  </text>
+  <text style="fill: #000000;text-anchor:start;font-size:11.2889;font-family:sanserif;font-style:normal;font-weight:normal" x="640" y="439.735">
+    <tspan x="640" y="439.735">48×1+65×2+6C×3+6C×4+61×5 = EB mod FF</tspan>
+  </text>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="776" y1="173" x2="775.915" y2="229.864"/>
+    <polygon style="fill: #000000" points="775.903,237.364 770.918,227.356 775.915,229.864 780.918,227.371 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="775.903,237.364 770.918,227.356 775.915,229.864 780.918,227.371 "/>
+  </g>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="775.9" y1="292.6" x2="776.409" y2="347.264"/>
+    <polygon style="fill: #000000" points="776.479,354.764 771.386,344.811 776.409,347.264 781.386,344.718 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="776.479,354.764 771.386,344.811 776.409,347.264 781.386,344.718 "/>
+  </g>
+  <text style="fill: #ff0000;text-anchor:start;font-size:19.7556;font-family:sanserif;font-style:normal;font-weight:normal" x="568" y="386.825">
+    <tspan x="568" y="386.825">Empreinte</tspan>
+  </text>
+</svg>

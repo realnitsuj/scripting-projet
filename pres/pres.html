@@ -101,12 +101,11 @@
   <div class="reveal">
     <div class="slides">
 
-<section id="title-slide">
+<section id="title-slide" data-background-image="background.jpg" data-background-size="contain">
   <h1 class="title">Utilitaire d’archivage</h1>
   <p class="subtitle">Scripting system</p>
   <p class="author">Justin Bossard</p>
   <p class="author">Antoine Feuillette</p>
-  <p class="date">9 octobre 2024</p>
 </section>
 
 <section>
@@ -167,7 +166,7 @@ class="sourceCode bash"><span class="ex">combo</span> <span class="va">$1</span>
 <h2>Organisation de la config</h2>
 <ul>
 <li>Configuration générale</li>
-<li>Configuration du serveur SSH/SFTP</li>
+<li>Configuration du serveur SSH</li>
 <li>Configuration des mails + serveur SMTP</li>
 </ul>
 </section></section>
@@ -179,17 +178,25 @@ class="title-slide slide level1">
 </section>
 <section id="vérification-de-modifications" class="slide level2">
 <h2>Vérification de modifications</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
 <p>Utilisation de checksum sur 256 bits</p>
 <p>Très faible probabilité de collisions</p>
+</div><div class="column" style="width:50%;">
+<p><img data-src="checksum.png" /></p>
+</div>
+</div>
 </section>
 <section id="serveur" class="slide level2">
 <h2>Serveur</h2>
 <p>Sur Raspberry Pi 4</p>
 <div class="columns">
-<div class="column" style="width:50%;">
+<div class="column" style="width:40%;">
 <h3 id="web">Web</h3>
 <p>Avec Apache, port 80 (http) ou 443 (https)</p>
-</div><!--image rpi au milieu--><div class="column" style="width:50%;">
+</div><div class="column" style="width:20%;">
+<p><img data-src="raspberry.png" /></p>
+</div><div class="column" style="width:40%;">
 <h3 id="ssh">SSH</h3>
 <p>Port 22</p>
 <p>Suppression des anciennes sauvegardes</p>
@@ -205,10 +212,9 @@ class="title-slide slide level1">
 <div class="column" style="width:50%;">
 <h3 id="écriture-de-logs">Écriture de logs</h3>
 <p>Spécifications selon cas d’erreurs possibles</p>
-<p>Succès</p>
 </div><div class="column" style="width:50%;">
 <h3 id="envoi-de-mails">Envoi de mails</h3>
-<p>Avec Mutt, via serveur SMTP externe (ZOHO MAIL &lt;3)</p>
+<p>Avec Mutt, via serveur SMTP externe (Zoho Mail)</p>
 </div>
 </div>
 </section>

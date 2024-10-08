@@ -4,11 +4,13 @@ subtitle: Scripting system
 author:
 - Justin Bossard
 - Antoine Feuillette
-date: 9 octobre 2024
 lang: fr-FR
 slideNumber: true
 controls: false
 theme: white
+title-slide-attributes:
+    data-background-image: background.jpg
+    data-background-size: contain
 ---
 
 # Solution technique
@@ -57,29 +59,38 @@ theme: white
 ## Organisation de la config
 
 - Configuration générale
-- Configuration du serveur SSH/SFTP
+- Configuration du serveur SSH
 - Configuration des mails + serveur SMTP
 
 # Réalisation des fonctionnalités demandées
 
 ## Vérification de modifications
 
+:::: {.columns}
+::: {.column width="50%"}
 Utilisation de checksum sur 256 bits
 
 Très faible probabilité de collisions
+:::
+::: {.column width="50%"}
+![](checksum.png)
+:::
+::::
 
 ## Serveur
 
 Sur Raspberry Pi 4
 
 :::: {.columns}
-::: {.column width="50%"}
+::: {.column width="40%"}
 ### Web
 
 Avec Apache, port 80 (http) ou 443 (https)
 :::
-<!--image rpi au milieu-->
-::: {.column width="50%"}
+::: {.column width="20%"}
+![](raspberry.png)
+:::
+::: {.column width="40%"}
 ### SSH
 
 Port 22
@@ -102,12 +113,11 @@ Serveur SSH utlise le protocole SFTP pour transférer des fichiers
 
 Spécifications selon cas d'erreurs possibles
 
-Succès
 :::
 :::{.column width="50%"}
 ### Envoi de mails
 
-Avec Mutt, via serveur SMTP externe (ZOHO MAIL <3)
+Avec Mutt, via serveur SMTP externe (Zoho Mail)
 :::
 ::::
 
