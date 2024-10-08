@@ -1,6 +1,6 @@
 ---
 title: Utilitaire d'archivage
-subtitle: Scripting system
+#subtitle: Scripting system
 author:
 - Justin Bossard
 - Antoine Feuillette
@@ -257,3 +257,40 @@ Amélioration : ne pas stocker le mot de passe mail en clair (voir GnuPG)
 ## Merci de votre attention ! ^^
 
 ![](gnu-tux.svg){ height=80% }
+
+# Annexes
+
+## Dépendances
+
+::::{ .columns }
+:::{.column width=50%}
+### Ordinateur client
+
+- `GNU coreutils`
+- `wget`
+- `unzip`
+- `tar`
+- `OpenSSH` en client
+- `mutt`
+
+:::
+:::{.column width=50%}
+### Serveur d'archivage
+
+- `GNU coreutils`
+- `GNU findutils`
+- `OpenSSH` en serveur
+:::
+::::
+
+## Utiliser Mutt
+
+Pour envoyer via SMTP, options avec `-e` (`from`, `smtp_pass`, `smtp_url`, `send_charset`) :
+
+```bash
+echo "message" | mutt -nx \
+                      -e "set [options] = \"[valeur]\"" \
+					  -s "Objet" \
+					  -a $emplacementLog -- \
+					  "$(echo ${mailDestinataires[*]})"
+```

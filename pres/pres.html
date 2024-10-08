@@ -103,7 +103,6 @@
 
 <section id="title-slide" data-background-image="background.jpg" data-background-opacity="0.9" data-background-size="contain">
   <h1 class="title">Utilitaire d’archivage</h1>
-  <p class="subtitle">Scripting system</p>
   <p class="author">Justin Bossard</p>
   <p class="author">Antoine Feuillette</p>
 </section>
@@ -382,6 +381,46 @@ GnuPG)</p>
 <section id="merci-de-votre-attention" class="slide level2">
 <h2>Merci de votre attention ! ^^</h2>
 <p><img data-src="gnu-tux.svg" style="height:80.0%" /></p>
+</section></section>
+<section>
+<section id="annexes" class="title-slide slide level1">
+<h1>Annexes</h1>
+
+</section>
+<section id="dépendances" class="slide level2">
+<h2>Dépendances</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3 id="ordinateur-client">Ordinateur client</h3>
+<ul>
+<li><code>GNU coreutils</code></li>
+<li><code>wget</code></li>
+<li><code>unzip</code></li>
+<li><code>tar</code></li>
+<li><code>OpenSSH</code> en client</li>
+<li><code>mutt</code></li>
+</ul>
+</div><div class="column" style="width:50%;">
+<h3 id="serveur-darchivage-1">Serveur d’archivage</h3>
+<ul>
+<li><code>GNU coreutils</code></li>
+<li><code>GNU findutils</code></li>
+<li><code>OpenSSH</code> en serveur</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="utiliser-mutt" class="slide level2">
+<h2>Utiliser Mutt</h2>
+<p>Pour envoyer via SMTP, options avec <code>-e</code>
+(<code>from</code>, <code>smtp_pass</code>, <code>smtp_url</code>,
+<code>send_charset</code>) :</p>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;message&quot;</span> <span class="kw">|</span> <span class="ex">mutt</span> <span class="at">-nx</span> <span class="dt">\</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>                      <span class="at">-e</span> <span class="st">&quot;set [options] = </span><span class="dt">\&quot;</span><span class="st">[valeur]</span><span class="dt">\&quot;</span><span class="st">&quot;</span> <span class="dt">\</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>                      <span class="at">-s</span> <span class="st">&quot;Objet&quot;</span> <span class="dt">\</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>                      <span class="at">-a</span> <span class="va">$emplacementLog</span> <span class="at">--</span> <span class="dt">\</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>                      <span class="st">&quot;</span><span class="va">$(</span><span class="bu">echo</span> <span class="va">${mailDestinataires</span><span class="op">[*]</span><span class="va">})</span><span class="st">&quot;</span></span></code></pre></div>
 </section></section>
     </div>
   </div>
