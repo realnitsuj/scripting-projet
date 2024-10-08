@@ -8,7 +8,27 @@ date: 9 octobre 2024
 lang: fr-FR
 slideNumber: true
 controls: false
+theme: white
 ---
+
+# Solution technique
+
+::: incremental
+
+1. Récupération de l'archive `zip` sur serveur Web distant
+2. Décompression de l'archive → dump SQL
+3. Vérification de changements
+4. Compression en `tgz`
+5. Envoi sur serveur d'archivage
+
+:::
+
+***
+
+## En parallèle
+
+- Suppression des sauvegardes trop anciennes
+- Écriture de logs et envoi de mails
 
 # Présentation de la structure
 
@@ -18,7 +38,7 @@ controls: false
 .
 |-  archive.sh      # Script
 |-  archive.conf    # Fichier de configuration
-|-  archive.log     # Logs du script, possibilité de modifier l'emplacement
+|-  archive.log     # Logs du script
 |-  .prevChecksum   # Somme de contrôle du précédent fichier
 ```
 
@@ -26,9 +46,13 @@ controls: false
 
 3 fonctions pour une lisibilité accrues :
 
+::: incremental
+
 - `ecrireLog $1 $2`{.bash} : `$1` correspond au succès ou à l'échec de l'opération, `$2` correspond à la somme de contrôle du fichier ou au motif de l'erreur
 - `envoyerMail $1 $2`{.bash} : `$2` correspond au corps du message en cas d'échec
 - `combo $1 $2`{.bash} : combine les deux fonctions précédentes
+
+:::
 
 ## Organisation de la config
 
@@ -38,25 +62,78 @@ controls: false
 
 # Réalisation des fonctionnalités demandées
 
-## Serveur Web
-
 ## Vérification de modifications
 
-## Serveur SFTP
+Utilisation de checksum sur 256 bits
 
-## Écriture de journaux
+Très faible probabilité de collisions
 
-## Envoi de mails
+## Serveur
 
-Apache blablabla
+Sur Raspberry Pi 4
+
+:::: {.columns}
+::: {.column width="50%"}
+### Web
+
+Avec Apache, port 80 (http) ou 443 (https)
+:::
+<!--image rpi au milieu-->
+::: {.column width="50%"}
+### SSH
+
+Port 22
+
+Suppression des anciennes sauvegardes
+:::
+::::
+
+::: notes
+
+Serveur SSH utlise le protocole SFTP pour transférer des fichiers
+
+:::
+
+## Suivi des opérations
+
+:::: {.columns}
+::: {.column width="50%"}
+### Écriture de logs
+
+Spécifications selon cas d'erreurs possibles
+
+Succès
+:::
+:::{.column width="50%"}
+### Envoi de mails
+
+Avec Mutt, via serveur SMTP externe (ZOHO MAIL <3)
+:::
+::::
 
 ## Automatisation
 
-Cron
+Utilisation de Cron
+
+```
+0 4 * * * /path/to/archive.sh
+```
 
 ::: notes
-...
+
+Utilisateur a l'autorisation d'exécution sur `archive.sh`
+
+Membre du groupe `cron`
+
+Utilisation de `fcron` si machine potentiellement éteinte à l'heure spécifiée (à voir)
+
 :::
 
 # Démonstration
+
+## Test normal
+
+## Test avec fichier identique
+
+## Test avec serveur d'archivage inaccessible
 

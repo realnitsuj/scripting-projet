@@ -95,7 +95,7 @@
     code span.vs { color: #4070a0; } /* VerbatimString */
     code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
   </style>
-  <link rel="stylesheet" href="https://unpkg.com/reveal.js@^4//dist/theme/black.css" id="theme">
+  <link rel="stylesheet" href="https://unpkg.com/reveal.js@^4//dist/theme/white.css" id="theme">
 </head>
 <body>
   <div class="reveal">
@@ -110,6 +110,27 @@
 </section>
 
 <section>
+<section id="solution-technique" class="title-slide slide level1">
+<h1>Solution technique</h1>
+<div>
+<ol type="1">
+<li class="fragment">Récupération de l’archive <code>zip</code> sur
+serveur Web distant</li>
+<li class="fragment">Décompression de l’archive → dump SQL</li>
+<li class="fragment">Vérification de changements</li>
+<li class="fragment">Compression en <code>tgz</code></li>
+<li class="fragment">Envoi sur serveur d’archivage</li>
+</ol>
+</div>
+</section>
+<section id="en-parallèle" class="slide level2">
+<h2>En parallèle</h2>
+<ul>
+<li>Suppression des sauvegardes trop anciennes</li>
+<li>Écriture de logs et envoi de mails</li>
+</ul>
+</section></section>
+<section>
 <section id="présentation-de-la-structure"
 class="title-slide slide level1">
 <h1>Présentation de la structure</h1>
@@ -120,25 +141,27 @@ class="title-slide slide level1">
 <pre><code>.
 |-  archive.sh      # Script
 |-  archive.conf    # Fichier de configuration
-|-  archive.log     # Logs du script, possibilité de modifier l&#39;emplacement
+|-  archive.log     # Logs du script
 |-  .prevChecksum   # Somme de contrôle du précédent fichier</code></pre>
 </section>
 <section id="organisation-du-script" class="slide level2">
 <h2>Organisation du script</h2>
 <p>3 fonctions pour une lisibilité accrues :</p>
+<div>
 <ul>
-<li><code
+<li class="fragment"><code
 class="sourceCode bash"><span class="ex">ecrireLog</span> <span class="va">$1</span> <span class="va">$2</span></code>
 : <code>$1</code> correspond au succès ou à l’échec de l’opération,
 <code>$2</code> correspond à la somme de contrôle du fichier ou au motif
 de l’erreur</li>
-<li><code
+<li class="fragment"><code
 class="sourceCode bash"><span class="ex">envoyerMail</span> <span class="va">$1</span> <span class="va">$2</span></code>
 : <code>$2</code> correspond au corps du message en cas d’échec</li>
-<li><code
+<li class="fragment"><code
 class="sourceCode bash"><span class="ex">combo</span> <span class="va">$1</span> <span class="va">$2</span></code>
 : combine les deux fonctions précédentes</li>
 </ul>
+</div>
 </section>
 <section id="organisation-de-la-config" class="slide level2">
 <h2>Organisation de la config</h2>
@@ -154,29 +177,68 @@ class="title-slide slide level1">
 <h1>Réalisation des fonctionnalités demandées</h1>
 
 </section>
-<section id="serveur-sftp" class="slide level2">
-<h2>Serveur SFTP</h2>
-</section>
 <section id="vérification-de-modifications" class="slide level2">
 <h2>Vérification de modifications</h2>
+<p>Utilisation de checksum sur 256 bits</p>
+<p>Très faible probabilité de collisions</p>
 </section>
-<section id="envoi-de-mails" class="slide level2">
-<h2>Envoi de mails</h2>
+<section id="serveur" class="slide level2">
+<h2>Serveur</h2>
+<p>Sur Raspberry Pi 4</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3 id="web">Web</h3>
+<p>Avec Apache, port 80 (http) ou 443 (https)</p>
+</div><!--image rpi au milieu--><div class="column" style="width:50%;">
+<h3 id="ssh">SSH</h3>
+<p>Port 22</p>
+<p>Suppression des anciennes sauvegardes</p>
+</div>
+</div>
+<aside class="notes">
+<p>Serveur SSH utlise le protocole SFTP pour transférer des fichiers</p>
+</aside>
 </section>
-<section id="serveur-web" class="slide level2">
-<h2>Serveur Web</h2>
-<p>Apache blablabla</p>
+<section id="suivi-des-opérations" class="slide level2">
+<h2>Suivi des opérations</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3 id="écriture-de-logs">Écriture de logs</h3>
+<p>Spécifications selon cas d’erreurs possibles</p>
+<p>Succès</p>
+</div><div class="column" style="width:50%;">
+<h3 id="envoi-de-mails">Envoi de mails</h3>
+<p>Avec Mutt, via serveur SMTP externe (ZOHO MAIL &lt;3)</p>
+</div>
+</div>
 </section>
 <section id="automatisation" class="slide level2">
 <h2>Automatisation</h2>
+<p>Utilisation de Cron</p>
+<pre><code>0 4 * * * /path/to/archive.sh</code></pre>
 <aside class="notes">
-<p>…</p>
+<p>Utilisateur a l’autorisation d’exécution sur
+<code>archive.sh</code></p>
+<p>Membre du groupe <code>cron</code></p>
+<p>Utilisation de <code>fcron</code> si machine potentiellement éteinte
+à l’heure spécifiée (à voir)</p>
 </aside>
 </section></section>
+<section>
 <section id="démonstration" class="title-slide slide level1">
 <h1>Démonstration</h1>
 
 </section>
+<section id="test-normal" class="slide level2">
+<h2>Test normal</h2>
+</section>
+<section id="test-avec-fichier-identique" class="slide level2">
+<h2>Test avec fichier identique</h2>
+</section>
+<section id="test-avec-serveur-darchivage-inaccessible"
+class="slide level2">
+<h2>Test avec serveur d’archivage inaccessible</h2>
+</section></section>
     </div>
   </div>
 
