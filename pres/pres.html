@@ -101,7 +101,7 @@
   <div class="reveal">
     <div class="slides">
 
-<section id="title-slide" data-background-image="background.jpg" data-background-size="contain">
+<section id="title-slide" data-background-image="background.jpg" data-background-opacity="0.9" data-background-size="contain">
   <h1 class="title">Utilitaire d’archivage</h1>
   <p class="subtitle">Scripting system</p>
   <p class="author">Justin Bossard</p>
@@ -109,71 +109,35 @@
 </section>
 
 <section>
-<section id="solution-technique" class="title-slide slide level1">
-<h1>Solution technique</h1>
+<section id="présentation-du-projet" class="title-slide slide level1">
+<h1>Présentation du projet</h1>
+
+</section>
+<section id="étapes" class="slide level2">
+<h2>Étapes</h2>
 <div>
 <ol type="1">
-<li class="fragment">Récupération de l’archive <code>zip</code> sur
-serveur Web distant</li>
-<li class="fragment">Décompression de l’archive → dump SQL</li>
+<li class="fragment">Récupération d’archive <code>zip</code> sur serveur
+Web distant</li>
+<li class="fragment">Décompression archive → dump SQL</li>
 <li class="fragment">Vérification de changements</li>
 <li class="fragment">Compression en <code>tgz</code></li>
-<li class="fragment">Envoi sur serveur d’archivage</li>
+<li class="fragment">Envoi sur serveur d’archivage SSH en SFTP</li>
 </ol>
 </div>
 </section>
-<section id="en-parallèle" class="slide level2">
-<h2>En parallèle</h2>
-<ul>
-<li>Suppression des sauvegardes trop anciennes</li>
-<li>Écriture de logs et envoi de mails</li>
-</ul>
-</section></section>
-<section>
-<section id="présentation-de-la-structure"
-class="title-slide slide level1">
-<h1>Présentation de la structure</h1>
+<section class="slide level2">
 
-</section>
-<section id="fichiers" class="slide level2">
-<h2>Fichiers</h2>
-<pre><code>.
-|-  archive.sh      # Script
-|-  archive.conf    # Fichier de configuration
-|-  archive.log     # Logs du script
-|-  .prevChecksum   # Somme de contrôle du précédent fichier</code></pre>
-</section>
-<section id="organisation-du-script" class="slide level2">
-<h2>Organisation du script</h2>
-<p>3 fonctions pour une lisibilité accrues :</p>
-<div>
+<h3 id="en-parallèle">En parallèle</h3>
 <ul>
-<li class="fragment"><code
-class="sourceCode bash"><span class="ex">ecrireLog</span> <span class="va">$1</span> <span class="va">$2</span></code>
-: <code>$1</code> correspond au succès ou à l’échec de l’opération,
-<code>$2</code> correspond à la somme de contrôle du fichier ou au motif
-de l’erreur</li>
-<li class="fragment"><code
-class="sourceCode bash"><span class="ex">envoyerMail</span> <span class="va">$1</span> <span class="va">$2</span></code>
-: <code>$2</code> correspond au corps du message en cas d’échec</li>
-<li class="fragment"><code
-class="sourceCode bash"><span class="ex">combo</span> <span class="va">$1</span> <span class="va">$2</span></code>
-: combine les deux fonctions précédentes</li>
-</ul>
-</div>
-</section>
-<section id="organisation-de-la-config" class="slide level2">
-<h2>Organisation de la config</h2>
-<ul>
-<li>Configuration générale</li>
-<li>Configuration du serveur SSH</li>
-<li>Configuration des mails + serveur SMTP</li>
+<li>Suppression sauvegardes trop anciennes</li>
+<li>Écriture logs et envoi de mail</li>
 </ul>
 </section></section>
 <section>
-<section id="réalisation-des-fonctionnalités-demandées"
+<section id="fonctionnalités-attendues"
 class="title-slide slide level1">
-<h1>Réalisation des fonctionnalités demandées</h1>
+<h1>Fonctionnalités attendues</h1>
 
 </section>
 <section id="vérification-de-modifications" class="slide level2">
@@ -183,9 +147,12 @@ class="title-slide slide level1">
 <p>Utilisation de checksum sur 256 bits</p>
 <p>Très faible probabilité de collisions</p>
 </div><div class="column" style="width:50%;">
-<p><img data-src="checksum.png" /></p>
+<p><img data-src="checksum.svg" style="width:100.0%" /></p>
 </div>
 </div>
+<aside class="notes">
+<p><strong>Antoine</strong></p>
+</aside>
 </section>
 <section id="serveur" class="slide level2">
 <h2>Serveur</h2>
@@ -193,16 +160,18 @@ class="title-slide slide level1">
 <div class="columns">
 <div class="column" style="width:40%;">
 <h3 id="web">Web</h3>
-<p>Avec Apache, port 80 (http) ou 443 (https)</p>
+<p>Avec Apache, port 80 (<code>http</code>) ou 443
+(<code>https</code>)</p>
 </div><div class="column" style="width:20%;">
-<p><img data-src="raspberry.png" /></p>
+<p><img data-src="raspberry.svg" style="width:100.0%" /></p>
 </div><div class="column" style="width:40%;">
-<h3 id="ssh">SSH</h3>
-<p>Port 22</p>
-<p>Suppression des anciennes sauvegardes</p>
+<h3 id="ssh-port-22">SSH (Port 22)</h3>
+<p>Suppression anciennes sauvegardes</p>
+<p>Connexion avec paires de clés RSA</p>
 </div>
 </div>
 <aside class="notes">
+<p><strong>Justin</strong></p>
 <p>Serveur SSH utlise le protocole SFTP pour transférer des fichiers</p>
 </aside>
 </section>
@@ -211,24 +180,182 @@ class="title-slide slide level1">
 <div class="columns">
 <div class="column" style="width:50%;">
 <h3 id="écriture-de-logs">Écriture de logs</h3>
+<p><img data-src="logs.png" width="100" /></p>
 <p>Spécifications selon cas d’erreurs possibles</p>
 </div><div class="column" style="width:50%;">
 <h3 id="envoi-de-mails">Envoi de mails</h3>
+<p><img data-src="mail.png" width="100" /></p>
 <p>Avec Mutt, via serveur SMTP externe (Zoho Mail)</p>
 </div>
 </div>
 </section>
 <section id="automatisation" class="slide level2">
 <h2>Automatisation</h2>
-<p>Utilisation de Cron</p>
+<p>Utilisation de Cron (<code
+class="sourceCode bash"><span class="fu">crontab</span> <span class="at">-e</span></code>)
+:</p>
 <pre><code>0 4 * * * /path/to/archive.sh</code></pre>
+<p>Exemple avec <code>fcron</code> :</p>
+<pre><code>&amp;bootrun(true) 0 4 * * * /path/to/archive.sh</code></pre>
 <aside class="notes">
+<p><strong>Justin</strong></p>
 <p>Utilisateur a l’autorisation d’exécution sur
 <code>archive.sh</code></p>
 <p>Membre du groupe <code>cron</code></p>
 <p>Utilisation de <code>fcron</code> si machine potentiellement éteinte
 à l’heure spécifiée (à voir)</p>
 </aside>
+</section></section>
+<section>
+<section id="solution-technique" class="title-slide slide level1">
+<h1>Solution technique</h1>
+
+</section>
+<section id="fichiers" class="slide level2">
+<h2>Fichiers</h2>
+<pre><code>.
+|-  archive.sh      # Script bash
+|-  archive.conf    # Fichier de configuration
+|-  archive.log     # Logs du script
+|-  .prevChecksum   # Somme de contrôle du précédent fichier</code></pre>
+</section>
+<section id="fonctions-du-script" class="slide level2">
+<h2>Fonctions du script</h2>
+<div>
+<dl>
+<dt class="fragment"><code
+class="sourceCode bash"><span class="ex">ecrireLog</span> <span class="va">$1</span> <span class="va">$2</span></code></dt>
+<dd class="fragment">
+<code class="sourceCode bash"><span class="va">$1</span></code>
+correspond au succès ou à l’échec de l’opération, <code
+class="sourceCode bash"><span class="va">$2</span></code> correspond à
+la somme de contrôle du fichier ou au motif de l’erreur
+</dd>
+<dt class="fragment"><code
+class="sourceCode bash"><span class="ex">envoyerMail</span> <span class="va">$1</span> <span class="va">$2</span></code></dt>
+<dd class="fragment">
+<code class="sourceCode bash"><span class="va">$2</span></code>
+correspond au corps du message en cas d’échec
+</dd>
+<dt class="fragment"><code
+class="sourceCode bash"><span class="ex">combo</span> <span class="va">$1</span> <span class="va">$2</span></code></dt>
+<dd class="fragment">
+combine les deux fonctions précédentes
+</dd>
+</dl>
+</div>
+</section>
+<section id="organisation-du-script" class="slide level2">
+<h2>Organisation du script</h2>
+<p>Pour gérer toutes les erreurs :</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="ot">! </span><span class="ex">commande</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="ex">combo</span> 1 <span class="st">&quot;L&#39;opération a échouée à cause de commande.&quot;</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code></pre></div>
+</section>
+<section id="organisation-de-la-config" class="slide level2">
+<h2>Organisation de la config</h2>
+<ul>
+<li>Configuration générale</li>
+<li>Configuration du serveur SSH</li>
+<li>Configuration des mails + serveur SMTP</li>
+</ul>
+</section>
+<section class="slide level2">
+
+<h3 id="configuration-générale">Configuration générale</h3>
+<dl>
+<dt><code
+class="sourceCode bash"><span class="va">emplacementLog</span><span class="op">=</span>./archive.log</code></dt>
+<dd>
+Définit où les logs sont enregistrés.
+</dd>
+<dt><code
+class="sourceCode bash"><span class="va">logStdout</span><span class="op">=</span>0</code></dt>
+<dd>
+En cas d’échec, redirige le motif à la sortie standard (<code>0</code>)
+ou pas (<code>1</code>).
+</dd>
+<dt><code>archiveURL</code></dt>
+<dd>
+Définit l’emplacement de l’archive via une URL.
+</dd>
+</dl>
+</section>
+<section class="slide level2">
+
+<h3 id="serveur-darchivage">Serveur d’archivage</h3>
+<dl>
+<dt><code>adresseArchivage</code></dt>
+<dd>
+Adresse IP du serveur d’archivage.
+</dd>
+<dt><code>usernameSSH</code></dt>
+<dd>
+Nom d’utilisateur à utiliser.
+</dd>
+<dt><code>pathSSH</code></dt>
+<dd>
+Chemin sur lequel enregistrer les archives.
+</dd>
+<dt><code
+class="sourceCode bash"><span class="va">dureeConservation</span><span class="op">=</span>30</code></dt>
+<dd>
+Durée de conservation des archives, en jours.
+</dd>
+</dl>
+</section>
+<section class="slide level2">
+
+<h3 id="envoi-de-mails-1">Envoi de mails</h3>
+<dl>
+<dt><code
+class="sourceCode bash"><span class="va">envoyerMail</span><span class="op">=</span>1</code></dt>
+<dd>
+Jamais (<code>0</code>), en cas d’échec (<code>1</code>) ou toujours
+(<code>2</code>).
+</dd>
+<dt><code
+class="sourceCode bash"><span class="va">mailDestinataires</span><span class="op">=</span><span class="va">(</span>dest1@mail.org<span class="va">)</span></code></dt>
+<dd>
+Destinataires du mail.
+</dd>
+<dt><code>objSucces</code> et <code>objEchec</code></dt>
+<dd>
+Objet du mail en cas de succès/échec.
+</dd>
+<dt><code
+class="sourceCode bash"><span class="va">joindreLog</span><span class="op">=</span>1</code></dt>
+<dd>
+Comme <code
+class="sourceCode bash"><span class="va">$envoyerMail</span></code>
+</dd>
+<dt><code
+class="sourceCode bash"><span class="va">muttrcUtilisateur</span><span class="op">=</span>1</code></dt>
+<dd>
+Utiliser le <code>~/.muttrc</code> utilisateur (<code>0</code>) ou non
+(<code>1</code>).
+</dd>
+</dl>
+</section>
+<section class="slide level2">
+
+<h4 id="serveur-smtp">Serveur SMTP</h4>
+<p>Uniquement si <code>muttrcUtilisateur=1</code>.</p>
+<dl>
+<dt><code>serveurHote</code></dt>
+<dd>
+Serveur SMTP qui gère l’envoi de mails.
+</dd>
+<dt><code>port</code></dt>
+<dd>
+Port sur lequel contacter le serveur.
+</dd>
+<dt><code>mailEnvoyeur</code> et <code>motDePasse</code></dt>
+<dd>
+Pour s’identifier sur <code>serveurHote</code>.
+</dd>
+</dl>
 </section></section>
 <section>
 <section id="démonstration" class="title-slide slide level1">
@@ -244,6 +371,17 @@ class="title-slide slide level1">
 <section id="test-avec-serveur-darchivage-inaccessible"
 class="slide level2">
 <h2>Test avec serveur d’archivage inaccessible</h2>
+</section></section>
+<section>
+<section id="conclusion" class="title-slide slide level1">
+<h1>Conclusion</h1>
+<p>Solution fonctionnelle, qui considère tous les cas de figures</p>
+<p>Amélioration : ne pas stocker le mot de passe mail en clair (voir
+GnuPG)</p>
+</section>
+<section id="merci-de-votre-attention" class="slide level2">
+<h2>Merci de votre attention ! ^^</h2>
+<p><img data-src="gnu-tux.svg" style="height:80.0%" /></p>
 </section></section>
     </div>
   </div>
