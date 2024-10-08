@@ -11,7 +11,7 @@ theme: white
 title-slide-attributes:
     data-background-image: background.jpg
     data-background-size: contain
-	data-background-opacity: 0.9
+    data-background-opacity: 0.9
 ---
 
 # Présentation du projet
@@ -21,7 +21,7 @@ title-slide-attributes:
 ::: incremental
 
 1. Récupération d'archive `zip` sur serveur Web distant
-2. Décompression archive → dump SQL
+2. Décompression → dump SQL
 3. Vérification de changements
 4. Compression en `tgz`
 5. Envoi sur serveur d'archivage SSH en SFTP
@@ -64,7 +64,8 @@ Sur Raspberry Pi 4
 ::: {.column width="40%"}
 ### Web
 
-Avec Apache, port 80 (`http`) ou 443 (`https`)
+Serveur Apache  
+port 80 (`http`) ou 443 (`https`)
 :::
 ::: {.column width="20%"}
 ![](raspberry.svg){ width=100% }
@@ -74,7 +75,7 @@ Avec Apache, port 80 (`http`) ou 443 (`https`)
 
 Suppression anciennes sauvegardes
 
-Connexion avec paires de clés RSA
+Connexion avec paire de clés RSA
 :::
 ::::
 
@@ -83,6 +84,8 @@ Connexion avec paires de clés RSA
 **Justin**
 
 Serveur SSH utlise le protocole SFTP pour transférer des fichiers
+
+Clés RSA permet exécution autonome du script
 
 :::
 
@@ -94,7 +97,7 @@ Serveur SSH utlise le protocole SFTP pour transférer des fichiers
 
 ![](logs.png){ width=100px }
 
-Spécifications selon cas d'erreurs possibles
+Spécifications selon erreurs possibles
 
 :::
 :::{.column width="50%"}
@@ -128,7 +131,7 @@ Utilisateur a l'autorisation d'exécution sur `archive.sh`
 
 Membre du groupe `cron`
 
-Utilisation de `fcron` si machine potentiellement éteinte à l'heure spécifiée (à voir)
+Utilisation de `fcron` si machine potentiellement éteinte à l'heure spécifiée
 
 :::
 
@@ -146,18 +149,28 @@ Utilisation de `fcron` si machine potentiellement éteinte à l'heure spécifié
 
 ## Fonctions du script
 
-::: incremental
+:::::{.columns}
+::::{.column width=50%}
 
-`ecrireLog $1 $2`{.bash}
-:   `$1`{.bash} correspond au succès ou à l'échec de l'opération, `$2`{.bash} correspond à la somme de contrôle du fichier ou au motif de l'erreur
+### Arguments
 
-`envoyerMail $1 $2`{.bash}
-:   `$2`{.bash} correspond au corps du message en cas d'échec
+`$1`{.bash} 
+:   `0` (succès) ou `1` (échec)
 
-`combo $1 $2`{.bash}
-:   combine les deux fonctions précédentes
+`$2`{.bash}
+:   Si succès, checksum
+:   Si échec, raison
+::::
+::::{.column width=50%}
 
-:::
+### Fonctions
+
+- `ecrireLog $1 $2`{.bash}
+- `envoyerMail $1 $2`{.bash}
+- `combo $1 $2`{.bash}
+
+::::
+:::::
 
 ## Organisation du script
 
@@ -294,4 +307,51 @@ echo "message" | mutt -nx \
 					  -s "Objet" \
 					  -a $emplacementLog -- \
 					  "$(echo ${mailDestinataires[*]})"
+```
+
+## Fonctions
+
+### `ecrireLog`
+
+```bash
+function ecrireLog() {
+    if [[ $1 -eq 0 ]]; then
+		echo "[ $(date +'%T - %d %b %Y') ] : Succès, checksum=$2" >> "$emplacementLog"
+    else
+		[[ $logStdout -eq 0 ]] && echo "$2"
+		echo "[ $(date +'%T - %d %b %Y') ] : Échec, $2" >> "$emplacementLog"
+    fi
+}
+```
+
+***
+
+### `envoyerMail`
+
+```bash
+function envoyerMail() {
+    if [[ ${#mailDestinataires[*]} -ne 0 && (($1 -eq 1 && $envoyerMail -eq 1) || $envoyerMail -eq 2) ]]; then
+
+	if [[ $muttrcUtilisateur -eq 0 ]]; then
+	    echo "$([[ $1 -eq 0 ]] && echo L\'opération de ce jour est un succès || echo $2)" | \
+		mutt -x \
+		     -s "$([[ $1 -eq 0 ]] && echo $objSucces || echo $objEchec)" \
+		     $([[ $joindreLog -eq 2 || ($1 -eq 1 && $joindreLog -eq 1) ]] && echo "-a $emplacementLog --") \
+		     "$(echo ${mailDestinataires[*]})"
+
+	else
+	    echo "$([[ $1 -eq 0 ]] && echo L\'opération d\'archivage de ce jour est un succès. || echo $2)" | \
+		mutt -nx \
+		     -e "set from = \"$mailEnvoyeur\"" \
+		     -e "set smtp_pass = \"$motDePasse\"" \
+		     -e "set smtp_url = \"smtps://$mailEnvoyeur@$serveurHote:$port\"" \
+		     -e "set send_charset = \"utf-8\"" \
+		     -s "$([[ $1 -eq 0 ]] && echo $objSucces || echo $objEchec)" \
+		     $([[ $joindreLog -eq 2 || ($1 -eq 1 && $joindreLog -eq 1) ]] && echo "-a $emplacementLog --") \
+		     "$(echo ${mailDestinataires[*]})"
+	fi
+    fi
+
+    [[ $? -ne 0 ]] && ecrireLog 1 "erreur lors de l'envoi du mail."
+}
 ```
