@@ -137,10 +137,10 @@ Suite à cela, la connexion au serveur via SSH pour l'utilisateur concerné ne d
 
 ## Configuration du Cron pour une exécution quotidienne
 
-Pour exécuter le script tous les jours à 3h00, avec un cron déjà configuré, après `crontab -e` (depuis un utilisateur qui a les droits nécessaires pour exécuter le script), ajouter à la fin du fichier ouvert :
+Pour exécuter le script tous les jours à 4 h 00, avec un cron déjà configuré, après `crontab -e` (depuis un utilisateur qui a les droits nécessaires pour exécuter le script), ajouter à la fin du fichier ouvert :
 
 ```
-0 3 * * * /path/to/archive.sh
+0 4 * * * /path/to/archive.sh
 ```
 
 Avec `/path/to/archive.sh` le chemin vers le script.

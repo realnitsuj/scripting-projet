@@ -160,20 +160,20 @@ function envoyerMail() {
 	    if [[ $muttrcUtilisateur -eq 0 ]]; then
 	        echo "$([[ $1 -eq 0 ]] && echo L\'opération de ce jour est un succès || echo $2)" | \
 				mutt -x \
-					-s "$([[ $1 -eq 0 ]] && echo $objSucces || echo $objEchec)" \
-					$([[ $joindreLog -eq 2 || ($1 -eq 1 && $joindreLog -eq 1) ]] && echo "-a $emplacementLog --") \
-					"$(echo ${mailDestinataires[*]})"
+					 -s "$([[ $1 -eq 0 ]] && echo $objSucces || echo $objEchec)" \
+					 $([[ $joindreLog -eq 2 || ($1 -eq 1 && $joindreLog -eq 1) ]] && echo "-a $emplacementLog --") \
+					 "$(echo ${mailDestinataires[*]})"
 
 	    else
 			echo "$([[ $1 -eq 0 ]] && echo L\'opération d\'archivage de ce jour est un succès. || echo $2)" | \
 				mutt -nx \
-					-e "set from = \"$mailEnvoyeur\"" \
-					-e "set smtp_pass = \"$motDePasse\"" \
-					-e "set smtp_url = \"smtps://$mailEnvoyeur@$serveurHote:$port\"" \
-					-e "set send_charset = \"utf-8\"" \
-					-s "$([[ $1 -eq 0 ]] && echo $objSucces || echo $objEchec)" \
-					$([[ $joindreLog -eq 2 || ($1 -eq 1 && $joindreLog -eq 1) ]] && echo "-a $emplacementLog --") \
-					"$(echo ${mailDestinataires[*]})"
+					 -e "set from = \"$mailEnvoyeur\"" \
+					 -e "set smtp_pass = \"$motDePasse\"" \
+					 -e "set smtp_url = \"smtps://$mailEnvoyeur@$serveurHote:$port\"" \
+					 -e "set send_charset = \"utf-8\"" \
+					 -s "$([[ $1 -eq 0 ]] && echo $objSucces || echo $objEchec)" \
+					 $([[ $joindreLog -eq 2 || ($1 -eq 1 && $joindreLog -eq 1) ]] && echo "-a $emplacementLog --") \
+					 "$(echo ${mailDestinataires[*]})"
 	    fi
     fi
 
@@ -399,24 +399,24 @@ function ecrireLog() {
 function envoyerMail() {
     if [[ ${#mailDestinataires[*]} -ne 0 && (($1 -eq 1 && $envoyerMail -eq 1) || $envoyerMail -eq 2) ]]; then
 
-	if [[ $muttrcUtilisateur -eq 0 ]]; then
-	    echo "$([[ $1 -eq 0 ]] && echo L\'opération de ce jour est un succès || echo $2)" | \
-		mutt -x \
-		     -s "$([[ $1 -eq 0 ]] && echo $objSucces || echo $objEchec)" \
-		     $([[ $joindreLog -eq 2 || ($1 -eq 1 && $joindreLog -eq 1) ]] && echo "-a $emplacementLog --") \
-		     "$(echo ${mailDestinataires[*]})"
+	    if [[ $muttrcUtilisateur -eq 0 ]]; then
+			echo "$([[ $1 -eq 0 ]] && echo L\'opération de ce jour est un succès || echo $2)" | \
+				mutt -x \
+					 -s "$([[ $1 -eq 0 ]] && echo $objSucces || echo $objEchec)" \
+					 $([[ $joindreLog -eq 2 || ($1 -eq 1 && $joindreLog -eq 1) ]] && echo "-a $emplacementLog --") \
+					 "$(echo ${mailDestinataires[*]})"
 
-	else
-	    echo "$([[ $1 -eq 0 ]] && echo L\'opération d\'archivage de ce jour est un succès. || echo $2)" | \
-		mutt -nx \
-		     -e "set from = \"$mailEnvoyeur\"" \
-		     -e "set smtp_pass = \"$motDePasse\"" \
-		     -e "set smtp_url = \"smtps://$mailEnvoyeur@$serveurHote:$port\"" \
-		     -e "set send_charset = \"utf-8\"" \
-		     -s "$([[ $1 -eq 0 ]] && echo $objSucces || echo $objEchec)" \
-		     $([[ $joindreLog -eq 2 || ($1 -eq 1 && $joindreLog -eq 1) ]] && echo "-a $emplacementLog --") \
-		     "$(echo ${mailDestinataires[*]})"
-	fi
+	    else
+			echo "$([[ $1 -eq 0 ]] && echo L\'opération d\'archivage de ce jour est un succès. || echo $2)" | \
+				mutt -nx \
+					 -e "set from = \"$mailEnvoyeur\"" \
+					 -e "set smtp_pass = \"$motDePasse\"" \
+					 -e "set smtp_url = \"smtps://$mailEnvoyeur@$serveurHote:$port\"" \
+					 -e "set send_charset = \"utf-8\"" \
+					 -s "$([[ $1 -eq 0 ]] && echo $objSucces || echo $objEchec)" \
+					 $([[ $joindreLog -eq 2 || ($1 -eq 1 && $joindreLog -eq 1) ]] && echo "-a $emplacementLog --") \
+					 "$(echo ${mailDestinataires[*]})"
+	    fi
     fi
 
     [[ $? -ne 0 ]] && ecrireLog 1 "erreur lors de l'envoi du mail."
