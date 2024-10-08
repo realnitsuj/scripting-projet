@@ -166,6 +166,7 @@ Pour gérer toutes les erreurs :
 ```bash
 if ! commande; then
 	combo 1 "L'opération a échouée à cause de commande."
+	exit 1
 fi
 ```
 

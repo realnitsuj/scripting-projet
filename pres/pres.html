@@ -586,7 +586,8 @@ combine les deux fonctions précédentes
 <p>Pour gérer toutes les erreurs :</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="ot">! </span><span class="ex">commande</span><span class="kw">;</span> <span class="cf">then</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="ex">combo</span> 1 <span class="st">&quot;L&#39;opération a échouée à cause de commande.&quot;</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code></pre></div>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">exit</span> 1</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code></pre></div>
 </section>
 <section id="organisation-de-la-config" class="slide level2">
 <h2>Organisation de la config</h2>
