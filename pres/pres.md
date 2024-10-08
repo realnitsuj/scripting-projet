@@ -38,17 +38,21 @@ controls: false
 
 # Réalisation des fonctionnalités demandées
 
-## Serveur SFTP
+## Serveur Web
 
 ## Vérification de modifications
 
-## Envoi de mails
+## Serveur SFTP
 
-## Serveur Web
+## Écriture de journaux
+
+## Envoi de mails
 
 Apache blablabla
 
 ## Automatisation
+
+Cron
 
 ::: notes
 ...
