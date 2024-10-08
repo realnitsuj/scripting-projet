@@ -62,7 +62,7 @@ Le fichier de configuration `archive.conf` comprend les variables suivantes :
     Par défaut sur `1`.
 
 `mailDestinataires=(dest1@mail.org dest2@mail.org)`
-:   Destinataires du mail, séparés par des espaces. Si cette liste est vide, et peut importe la valeur de `envoyerMail`, le programme quittera sans envoyer de mail et sans erreur.
+:   Destinataires du mail, séparés par des espaces. Si cette liste est vide, et peu importe la valeur de `envoyerMail`, le programme quittera sans envoyer de mail et sans erreur.
 
 `objSucces`
 :   Objet du mail à envoyer en cas de succès.
