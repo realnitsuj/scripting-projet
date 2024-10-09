@@ -71,7 +71,9 @@ port 80 (`http`) ou 443 (`https`)
 ![](raspberry.svg){ width=100% }
 :::
 ::: {.column width="40%"}
-### SSH (Port 22)
+### SSH
+
+Port 22
 
 Suppression anciennes sauvegardes
 
@@ -111,7 +113,7 @@ Avec Mutt, via serveur SMTP externe (Zoho Mail)
 
 ## Automatisation
 
-Utilisation de Cron (`crontab -e`{.bash}) :
+Utilisation de **Cron** (`crontab -e`{.bash}) :
 
 ```
 0 4 * * * /path/to/archive.sh
@@ -135,6 +137,38 @@ Utilisation de `fcron` si machine potentiellement éteinte à l'heure spécifié
 
 :::
 
+## Choix du langage
+
+### GNU Bash
+
+::::{.columns}
+:::{.column width=40%}
+![](bash.svg){width=100%}
+:::
+:::{.column width=60%}
+- Clair et concis
+- Intégré aux GNU/Linux
+- Intégrable autres systèmes, Unix ou non
+- Pas besoin des capacités de Python
+:::
+::::
+
+
+::: notes
+
+Intégrable autres systèmes :
+
+- Unix : MacOS, *BSD
+- Windows (pénible)
+
+Python est un langage multiparadigme, ici besoin uniquement de script
+
+Pas besoin d'installer des bibliothèques particulières
+
+Possibilité d'utiliser directement les commandes du système, beaucoup plus lisible
+
+:::
+
 # Solution technique
 
 ## Fichiers
@@ -155,7 +189,8 @@ Utilisation de `fcron` si machine potentiellement éteinte à l'heure spécifié
 ### Arguments
 
 `$1`{.bash} 
-:   `0` (succès) ou `1` (échec)
+:   Si succès, `0`
+:   Si échec, `1`
 
 `$2`{.bash}
 :   Si succès, checksum
@@ -178,7 +213,7 @@ Pour gérer toutes les erreurs :
 
 ```bash
 if ! commande; then
-	combo 1 "L'opération a échouée à cause de commande."
+	combo 1 "L'opération a échouée à cause de \`commande\`."
 	exit 1
 fi
 ```
