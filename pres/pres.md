@@ -137,6 +137,8 @@ Utilisation de `fcron` si machine potentiellement éteinte à l'heure spécifié
 
 :::
 
+# Solution technique
+
 ## Choix du langage
 
 ### GNU Bash
@@ -168,8 +170,6 @@ Pas besoin d'installer des bibliothèques particulières
 Possibilité d'utiliser directement les commandes du système, beaucoup plus lisible
 
 :::
-
-# Solution technique
 
 ## Fichiers
 
