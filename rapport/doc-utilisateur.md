@@ -5,6 +5,7 @@ title: Documentation utilisateur
 <!--Lien par références :-->
 [`GNU coreutils`]: https://www.gnu.org/software/coreutils/
 [`OpenSSH`]: https://www.openssh.com/
+[cron]: https://fr.wikipedia.org/wiki/Cron
 
 \newpage
 # Dépendances
@@ -17,7 +18,13 @@ On considère un système GNU/Linux muni des commandes de bases, donc avec [`GNU
 - [`unzip`](https://infozip.sourceforge.net/UnZip.html) : pour extraire le dump SQL de l'archive
 - [`tar`](https://www.gnu.org/software/tar/) : pour créer la nouvelle archive
 - [`OpenSSH`] : en client uniquement, pour communiquer avec le serveur de sauvegarde
-- [`Mutt`](http://www.mutt.org/) : pour communiquer par mail. Si la fonctionnalité de mail est désactivé, cette dépendance peut-être omise
+- [`mutt`](http://www.mutt.org/) : pour communiquer par mail. Si la fonctionnalité de mail est désactivée, cette dépendance peut-être omise
+
+Pour installer toutes les dépendances sur un système Debian :
+
+```bash
+sudo apt update && sudo apt install wget unzip tar ssh mutt
+```
 
 ## Serveur d'archivage
 
@@ -57,7 +64,7 @@ Ce script est entièrement configurable via les variables présentes dans le fic
 :   Adresse IP du serveur d'archivage, qui doit être accessible via SSH. Si le port 22 est utilisé, pas besoin de le préciser.
 
 `usernameSSH`
-:   Nom d'utilisateur à utiliser sur le serveur d'archivage
+:   Nom d'utilisateur à utiliser sur le serveur d'archivage.
 
 `pathSSH`
 :   Chemin sur lequel enregistrer les archives sur le serveur. Le chemin doit déjà exister et être accessible en lecture et écriture pour l'utilisateur renseigné à `usernameSSH`.
@@ -89,9 +96,9 @@ Ce script est entièrement configurable via les variables présentes dans le fic
 
 `joindreLog`
 :   Dans quelle situation joindre le fichier de logs complet, jamais (`0`), en cas d'échec (`1`) ou toujours (`2`).  
-    Attention, il s'agit du fichier de log entier, le motif d'échec, si c'est le cas, est toujours indiqué dans le corps du message.
+    Attention, il s'agit du fichier de log entier. Le motif d'échec, si c'est le cas, est toujours indiqué dans le corps du message.
 	
-	Par défaut sur `1`
+	Par défaut sur `1`.
 
 `muttrcUtilisateur`
 :   Utiliser le `~/.muttrc` de l'utilisateur (`0`) ou non (`1`).
@@ -137,10 +144,18 @@ Suite à cela, la connexion au serveur via SSH pour l'utilisateur concerné ne d
 
 ## Configuration du Cron pour une exécution quotidienne
 
-Pour exécuter le script tous les jours à 4 h 00, avec un cron déjà configuré, après `crontab -e` (depuis un utilisateur qui a les droits nécessaires pour exécuter le script), ajouter à la fin du fichier ouvert :
+Pour exécuter le script tous les jours à 4 h 00, avec un [cron] déjà configuré, après `crontab -e`{.bash} (depuis un utilisateur qui a les droits nécessaires pour exécuter le script), ajouter à la fin du fichier ouvert :
 
 ```
 0 4 * * * /path/to/archive.sh
 ```
 
 Avec `/path/to/archive.sh` le chemin vers le script.
+
+**Attention**, avec une implémentation suivant les spécifications par défaut de [cron], si l'ordinateur est éteint au moment voulu d'exécution, le script ne sera pas exécuté au redémarrage.
+
+Pour avoir ce comportement, on peut utiliser [fcron](http://fcron.free.fr/), avec le `crontab`{.bash} suivant :
+
+```
+&bootrun(true) 0 4 * * * /path/to/archive.sh
+```

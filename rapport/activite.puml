@@ -8,57 +8,48 @@ note right: Importer la configuration
 
 if (**Supprimer** les fichiers trop anciens
 du serveur d'archivage) then (Échec)
-    :Écrire logs, impossible d'accéder
-    au serveur d'archivage;
-    :Envoyer mail;
+    :combo 1 "Impossible d'accéder
+    au serveur d'archivage";
     end
 elseif (**Télécharger** l'archive) then (Échec)
-    :Écrire logs, impossible d'accéder
-    à l'archive;
-    :Envoyer mail;
+    :combo 1 "Impossible d'accéder
+    à l'archive";
     end
 elseif (**Décompresser** l'archive) then (Échec)
-    :Écrire logs, impossible de
-    décompresser l'archive;
-    :Envoyer mail;
+    :combo 1 "Impossible de
+    décompresser l'archive";
     end
 elseif (Un seul fichier SQL dans l'archive ?) then (Non)
-    :Écrire logs, mauvaise structure
-    d'archive;
-    :Envoyer mail;
+    :combo 1 "Mauvaise structure
+    d'archive";
     end
 endif
 
 :Supprimer l'archive zip;
 
 if (**Calculer** la somme de contrôle du fichier) then (Échec)
-    :Écrire logs, impossible de
-    calculer la somme de contrôle;
-    :Envoyer mail;
+    :combo 1 "Impossible de
+    calculer la somme de contrôle";
     end
 elseif (La somme de contrôle est
 la même que précédemment ?) then (Oui)
-    :Écrire logs, le fichier est
-    le même qu'à la dernière sauvegarde;
-    :Envoyer mail;
+    :combo 1 "Le fichier est
+    le même qu'à la dernière sauvegarde";
     end
 (Non) elseif (**Archiver** le nouveau dump) then (Échec)
-    :Écrire logs, impossible
-    d'archiver le dump;
-    :Envoyer mail;
+    :combo 1 "Impossible
+    d'archiver le dump";
     end
 elseif (**Copier** la sauvegarde sur
 le serveur d'archivage) then (Échec)
-    :Écrire logs, impossible d'accéder
-    au serveur d'archivage;
-    :Envoyer mail;
+    :combo 1 "Impossible d'accéder
+    au serveur d'archivage";
     end
 endif
 
 :Supprimer l'archive locale;
 :Actualiser la somme de contrôle sauvegardée;
-:Écrire le log de succès;
-:Envoyer le mail de succès;
+:combo 0 $currentChecksum;
 
 stop
 

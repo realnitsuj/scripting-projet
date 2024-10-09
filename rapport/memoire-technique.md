@@ -7,113 +7,94 @@ title: Mémoire technique
 
 <!--Lien par références :-->
 [`mutt`]: http://www.mutt.org/
+[Python]: https://www.python.org/
+[bash]: https://www.gnu.org/software/bash/
 
 \newpage
 # Présentation du projet
 
-Ce projet consiste à programmer un utilitaire d'archivage, qui télécharge un archive au [format ZIP](https://fr.wikipedia.org/wiki/ZIP_(format_de_fichier)) depuis un serveur Web. Cette archive contient un dump SQL, qui doit être à la racine et l'unique fichier SQL.
+Ce projet consiste à programmer un utilitaire d'archivage, qui télécharge une archive au format ZIP depuis un serveur Web. Cette archive contient un dump SQL, qui doit être à la racine et l'unique fichier SQL.
 
-Cet utilitaire est prévu pour s'exécuter quotidiennemnt et déterminer si le dump SQL a subi des changements par rapport à la veille. Si c'est le cas, il faut archiver le dump sur un serveur distant via le protocle SFTP, dans une archive TGZ, au foramt `AAAADDMM.tgz`.
+Cet utilitaire est prévu pour s'exécuter quotidiennement et déterminer si le dump SQL a subi des changements par rapport à la veille. Si c'est le cas, il faut archiver le dump sur un serveur distant via le protocle SFTP, dans une archive TGZ, au format `AAAADDMM.tgz`.
 
 Il faut également établir un suivi par mail, et un historique des opérations dans un fichier de journalisation.
 
-# Utilisation des variables
+# Justification des choix techniques
 
-## Variables du fichier de configuration
+## Choix du langage de script
 
-Le fichier de configuration `archive.conf` comprend les variables suivantes :
+Nous avons choisi d'écrire le script en [bash], car il s'agit d'un langage de script clair et concis. De plus, il est parfaitement intégré à la plupart des distributions GNU/Linux (en tant que shell par défaut), s'intègre facilement à d'autres distributions Unix ([MacOS](https://support.apple.com/guide/terminal/change-the-default-shell-trml113/mac), [*BSD](https://docs.freebsd.org/fr/articles/linux-users/#shells)), et peut s'intégrer à Windows^[<https://korben.info/installer-shell-bash-linux-windows-10.html>].
 
-### Configuration générale
+De plus, [bash] est plus léger que [Python], qui est un langage [multi-paradigme](https://fr.wikipedia.org/wiki/Paradigme_%28programmation%29). Pour notre cas d'usage, on a uniquement besoin des capacités de scripting du langage, les possibilités de [Python] sont donc superflues.
 
-`emplacementLog`
-:   Définit où les logs sont enregistrés. Attention, l'utilisateur qui exécute le script doit avoir les droits d'écriture dans le dossier parent.
+Enfin, [bash] permet d'interagir directement avec les commandes du système, et ne nécessite pas de bibliothèque externe, comme c'est le cas sur [Python].
 
-    Par défaut sur `./archive.log`.
+Ainsi, le choix de [bash] est plus avantageux en termes :
 
-`logStdout`
-:   En cas d'échec, redirige le motif à la sortie standard (`0`) ou pas (`1`).
+- de lisiblité
+- de limitations des dépendances
+- d'adaptation au projet
 
-    Par défaut sur `0`.
+## Test pour des changements dans le dump SQL
 
-`archiveURL`
-:   Définit l'emplacement de l'archive via une URL, accessible depuis l'ordinateur client.
+Plusieurs manières sont envisageables pour détecter des changements dans un fichier. La manière la plus sûre consiste à conserver une copie du fichier et à comparer octet par octet avec un autre fichier. Néanmoins, cela pose deux problèmes principaux : tout d'abord, si les fichiers sont grands, cela peut prendre un temps non négligeable, ensuite, il est nécessaire de stocker constamment un fichier inutile autrement.
 
-### Serveur d'archivage
+Nous avons donc décidé de procéder par calcul d'une [somme de contrôle](https://fr.wikipedia.org/wiki/Somme_de_contr%C3%B4le) du dump, que l'on stocke dans le fichier `.prevChecksum`, et qui permet un suivi abstrait des modifications. Cela a plusieurs avantages : la comparaison prend toujours le même temps, l'espace de stockage nécessaire est négligeable, et cela permet d'avoir un historique en inscrivant la somme de contrôle dans les logs. De cette manière, s'il y a besoin d'utiliser des archives par la suite, on pourra vérifier l'intégrité de la sauvegarde avec sa somme de contrôle, en regardant dans l'historique des logs.
 
-`adresseArchivage`
-:   Adresse IP du serveur d'archivage, qui doit être accessible via SSH. Si le port 22 est utilisé, pas besoin de le préciser.
+Nous utilisons la fonction `sha256sum`, de [GNU coreutils](https://www.gnu.org/software/coreutils/), qui permet de calculer la somme de contrôle sur 256 bits d'un fichier.
 
-`usernameSSH`
-:   Nom d'utilisateur à utiliser sur le serveur d'archivage
+Il est amplement suffisant et d'usage d'utiliser 256 bits pour ce genre de situation. Pour limiter au maximum le risque de collision on pourrait la calculer sur 512 bits, néanmoins pour des fichiers de taille importante ce calcul prendrait plus de temps et de ressources.
 
-`pathSSH`
-:   Chemin sur lequel enregistrer les archives sur le serveur. Le chemin doit déjà exister et être accessible en lecture et écriture pour l'utilisateur renseigné à `usernameSSH`.
+![Exemple de calcul d'une checksum](../pres/checksum.svg)
 
-`dureeConservation`
-:   Durée à partir de laquelle les anciennes archives seront supprimées, en jours.
+## Serveurs
 
-    Par défaut sur `30`.
+Pour tester les différentes fonctionnalités, nous avons mis en place deux serveurs sur une [Raspberry Pi 4](https://www.raspberrypi.com/products/raspberry-pi-4-model-b/).
 
-### Envoi de mails
+### Web
 
-`envoyerMail`
-:   Dans quel cas envoyer un mail, jamais (`0`), en cas d'échec de l'exécution (`1`) ou toujours (`2`).
+Pour pouvoir télécharger l'archive contenant le dump SQL à tout instant, nous avons mis en place un serveur Web avec [Apache](https://httpd.apache.org/), accessible via HTTP (port 80) ou HTTPS (port 443).
 
-    Par défaut sur `1`.
+Pour cela, il suffit d'installer Apache et de le démarrer automatiquement. Ensuite, on place l'archive d'intérêt dans `/var/www/html` et on y accède avec l'adresse IP (e.g. : `http(s)://176.190.35.242/sql_dump.zip`).
 
-`mailDestinataires=(dest1@mail.org dest2@mail.org)`
-:   Destinataires du mail, séparés par des espaces. Si cette liste est vide, et peu importe la valeur de `envoyerMail`, le programme quittera sans envoyer de mail et sans erreur.
+### SSH
 
-`objSucces`
-:   Objet du mail à envoyer en cas de succès.
+Le serveur d'archivage doit être accessible via SSH, nous avons donc installé OpenSSH sur le serveur. Il suffit ensuite de démarrer le démon SSH automatiquement puis d'accéder à la machine par le port 22 (par défaut).
 
-    Par défaut sur `Archivage du $(date +'%d %B %Y') réussi`.
+Nous avons également mis en place un système de [clés RSA](https://fr.wikipedia.org/wiki/Chiffrement_RSA), pour pouvoir se connecter au serveur sans avoir besoin du mot de passe :
 
-`objEchec`
-:   Objet du mail à envoyer en cas d'échec.
+- Clé privée
+  :   Sur l'ordinateur client *uniquement*.
+- Clé publique
+  :   Sur l'ordinateur client et sur le serveur.
+  
+Voir la *Documentation utilisateur* pour générer et utiliser cette paire de clés.
 
-    Par défaut sur `Archivage du $(date +'%d %B %Y') échoué`.
+## Envoi de mails
 
-`joindreLog`
-:   Dans quelle situation joindre le fichier de logs complet, jamais (`0`), en cas d'échec (`1`) ou toujours (`2`).  
-    Attention, il s'agit du fichier de log entier, le motif d'échec, si c'est le cas, est toujours indiqué dans le corps du message.
-	
-	Par défaut sur `1`
+Pour effectuer l'envoi des mails, on utilise [`mutt`], un logiciel libre permettant de se connecter simplement à un serveur SMTP.
 
-`muttrcUtilisateur`
-:   Utiliser le `~/.muttrc` de l'utilisateur (`0`) ou non (`1`).
+Pour tester cette fonctionnalité, et dans la mesure où la plupart des fournisseurs mails ont compliqués l'accès SMTP à des applications comme [`mutt`] ([Google](https://support.google.com/accounts/answer/6010255?hl=fr), [Microsoft](https://support.microsoft.com/en-us/office/modern-authentication-methods-now-needed-to-continue-syncing-outlook-email-in-non-microsoft-email-apps-c5d65390-9676-4763-b41f-d7986499a90d), Yahoo^[Fonctionne théoriquement, mais nous n'avons pas réussi, et certains posts laissent entendre que cette fonctionnalité est régulièrement désactivée.]...), nous n'avons trouvé que qu'un fournisseur permettant d'accéder facilement et *gratuitement* à leurs serveurs par SMTP : [Zoho Mail](https://www.zoho.com/fr/mail/).
 
-    Par défaut sur `1`.
+Nous avons donc créer une adresse Zoho, et l'envoi de mails et de pièces a été concluant, en fonction de la configuration renseignée (pièce jointe systématique, en cas d'échec...).
 
-#### Serveur SMTP
+## Automatisation
 
-Ces options n'auront aucune incidence si `muttrcUtilisateur=0`.
+Pour exécuter le script tous les jours à 4 h 00, avec un [cron] déjà configuré, après `crontab -e`{.bash} (depuis un utilisateur qui a les droits nécessaires pour exécuter le script), ajouter à la fin du fichier ouvert :
 
-`serveurHote`
-:   Serveur SMTP qui gère l'envoi de mails.
-
-`port`
-:   Port sur lequel contacter le serveur. En général, on a :
-
-    - `25` : sans chiffrement
-	- `465` : chiffrement implicite (TLS/SSL)
-	- `587` : chiffrement explicite (STARTTLS)
-
-`mailEnvoyeur`
-:   Mail envoyeur des informations de l'utilitaire, enregistré sur le serveur renseigné dans `serveurHote`.
-
-`motDePasse`
-:   Mot de passe associé au mail pour s'identifier sur `serveurHote`.
-
-## Variable utilisée dans le script
-
-Toutes les variables du fichier de configuration sont utilisées dans le script. On ne définit qu'une variable dans le script, comme tel :
-
-```bash
-currentChecksum=$(sha256sum ./*.sql | cut -d ' ' -f1)
+```
+0 4 * * * /path/to/archive.sh
 ```
 
-Cela permet de stocker la somme de contrôle du dump SQL en cours de traitement pour pouvoir la comparer avec la some de contrôle sauvegardée.
+Avec `/path/to/archive.sh` le chemin vers le script.
+
+**Attention**, avec une implémentation suivant les spécifications par défaut de [cron], si l'ordinateur est éteint au moment voulu d'exécution, le script ne sera pas exécuté au redémarrage.
+
+Pour avoir ce comportement, on peut utiliser [fcron](http://fcron.free.fr/), avec le `crontab`{.bash} suivant :
+
+```
+&bootrun(true) 0 4 * * * /path/to/archive.sh
+```
 
 # Organisation
 
@@ -131,6 +112,18 @@ On a l'organisation de fichier suivante :
 
 Pour simplifier la lecture et l'écriture du programme, nous avons écrit une fonction pour écrire les logs, une fonction pour envoyer un mail, et une fonction qui combine les deux.
 
+### Convention d'arguments des fonctions
+
+Nous avons établi la convention d'arguments suivantes pour les fonctions nécessaires :
+
+`$1`{.bash}
+:   Si l'opération est un succès, `0`.
+:   Si l'opération est un échec, `1`.
+
+`$2`{.bash}
+:   Si l'opération est un succès, checksum du fichier.
+:   Si l'opération est un échec, motif de celui-ci.
+
 ### Fonction d'écriture de logs
 
 ```bash
@@ -144,12 +137,7 @@ function ecrireLog() {
 }
 ```
 
-Cette fonction admet deux paramètres, le premier définit le succès ou l'échec de l'opération, le second dépend du premier :
-
-- en cas de succès, il s'agit de la somme de contrôle du fichier SQL sauvegardé
-- en cas d'échec, il s'agit du motif de l'échec
-
-On ajoute ensuite à la fin du fichier de log la date et l'heure d'écriture, si l'opération est un succès ou non, suivi de la checksum dans le premier cas et du motif d'échec dans le second.
+On ajoute à la fin du fichier de logs la date et l'heure d'écriture, suivi des paramètres adéquats.
 
 ### Fonction d'envoi de mails
 
@@ -181,16 +169,14 @@ function envoyerMail() {
 }
 ```
 
-Cette fonction admet également deux paramètres, le premier définit le succès ou l'échec de l'opération, le second, n'est utilisé qu'en cas d'échec, et contient alors le motif de celui-ci.
-
-Le booléen utiliser par le premier `if`{.bash} permet d'envoyer un mail si la liste de destinataires du fichier de configuration n'est pas vide *et* que on est en situation d'envoyer un mail (échec et `envoyerMail=1`, ou `envoyerMail=2`).
+Le booléen utilisé par le premier `if`{.bash} permet d'envoyer un mail si la liste de destinataires du fichier de configuration n'est pas vide *et* qu'on est en situation d'envoyer un mail (échec et `envoyerMail=1`, ou `envoyerMail=2`).
 
 On vérifie ensuite si l'utilisateur veut utiliser sa configuration de [`mutt`] ou non. Si ce n'est pas le cas, on précise que [`mutt`] ne doit pas utiliser le fichier de configuration de l'utilisateur (option `-n`), et on passe les paramètres nécessaires à l'envoi d'un mail en argument (option `-e "set option = \"valeur\""`) :
 
 - `from`
-  :   permet de définir l'identité de l'envoyeur. On utilise l'adresse mail renseignée dans le fichier de configuration
+  :   Permet de définir l'identité de l'envoyeur. On utilise l'adresse mail renseignée dans le fichier de configuration.
 - `smtp_pass`
-  :   le mot de passe qui permet de se connecter au serveur SMTP
+  :   Le mot de passe qui permet de se connecter au serveur SMTP.
 - `smtp_url`
   :   Définit le serveur auquel se connecter et le protocole de connexion (`smtps` ici). On renseigne également le port de connexion définit dans la configuration.
 - `send_charset`
@@ -198,7 +184,7 @@ On vérifie ensuite si l'utilisateur veut utiliser sa configuration de [`mutt`] 
 
 On définit le sujet du mail avec l'option `-s`, qui varie en fonction de l'aboutissement de l'opération (on utilise la syntaxe : `[[ succès ? ]] && oui || non`{.bash}).
 
-Ensuite, selon les préférences de l'utilisateur, on joint ou non le fichier de log. Pour cela, on vérifie s'il faut joindre systématiquement le log, ou s'il faut le joindre en cas d'échec et que c'en est un. Si la condition est vrai, on renvoie l'option `-a` avec le chemin de log, sinon on ne renvoie rien.
+Ensuite, selon les préférences de l'utilisateur, on joint ou non le fichier de log. Pour cela, on vérifie s'il faut joindre systématiquement le log, ou s'il faut le joindre en cas d'échec et que c'en est un. Si la condition est vraie, on renvoie l'option `-a` avec le chemin de log suivi de `--`^[Voir le manuel de Mutt, en cas de pièce jointe il faut séparer le fichier des destinataires.], sinon on ne renvoie rien.
 
 Enfin, on affiche tous les éléments de la liste des destinataires.
 
@@ -216,7 +202,26 @@ function combo() {
 }
 ```
 
-Cette fonction combine simplement les deux fonctions précédentes, et permet d'unifier les motifs d'arrêts de fonctions. En premier argument, on définit le succès (`0`) ou l'échec (`1`) de l'opération. En second, on donne la checksum du fichier concerné en cas de succès, ou le motif de l'arrêt en cas d'erreur.
+Cette fonction combine simplement les deux fonctions précédentes, et permet d'unifier les motifs d'arrêts de fonctions.
+
+### Gestion des erreurs
+
+Pour gérer toutes les erreurs en [bash], on utilise la syntaxe suivante :
+
+```bash
+if ! commande; then
+    combo 1 "L'opération a échouée à cause de \`commande\`."
+    exit 1
+fi
+```
+
+Cela permet de gérer simplement toutes les erreurs.
+
+### Diagramme d'activité
+
+Notre script a le diagrammes d'activité suivant (voir le [script complet](#script)) :
+
+![Diagramme d'activité](./activite.svg)
 
 ## Fichier de configuration (`archive.conf`)
 
@@ -224,12 +229,12 @@ Le fichier de configuration est organisé en plusieurs sections :
 
 1. Configuration générale
 2. Configuration du serveur d'archivage
-   :   Permet de configurer la connexion à un serveur SFTP via SSH
+   :   Permet de configurer la connexion à un serveur SFTP via SSH.
 3. Configuration des mails
    :   Permet de configurer les infos générales des mails : quand en envoyer, objets, destinataires...
    
    - Configuration serveur SMTP
-     :   Permet de définir comment se connecter au serveur d'envoi SMTP spécialement pour ce script, si nécessaire
+     :   Permet de définir comment se connecter au serveur d'envoi SMTP spécialement pour ce script, si nécessaire.
 
 ## Fichier de journaux (`archive.log`)
 
@@ -245,50 +250,121 @@ Une nouvelle entrée par ligne, en ordre décroissant d'ancienneté.
 
 Le fichier `.prevChecksum` n'a pas vocation à être consulté par l'utilisateur, d'où le fait qu'il soit caché. Il permet de stocker la somme de contrôle en 256 bits du dump SQL précédent, pour pouvoir déterminer si des modifications sont advenues.
 
-# Principe de fonctionnement
+# Utilisation des variables
 
-<!--Ça peut être cool si on fait un schéma propre avec PlantUML pour montrer les connexions et interactions entre serveurs-->
+## Variables du fichier de configuration
 
-![Diagramme d'activité](./activite.svg)
+Le fichier de configuration `archive.conf` comprend les variables suivantes :
 
-# Justification des choix techniques
 
-## Choix du langage de script
+### Configuration générale
 
-Nous avons choisi d'écrire le script en [bash](https://www.gnu.org/software/bash/), car il s'agit d'un langage de script clair et concis. De plus, il est parfaitement intégré à la plupart des distributions GNU/Linux, en tant que shell par défaut, s'intègre facilement aux distributions *BSD^[<https://docs.freebsd.org/fr/articles/linux-users/#shells>], et peut s'intégrer à Windows^[<https://korben.info/installer-shell-bash-linux-windows-10.html>].
+`emplacementLog`
+:   Définit où les logs sont enregistrés. Attention, l'utilisateur qui exécute le script doit avoir les droits d'écriture dans le dossier parent.
 
-## Test pour des changements dans le dump SQL
+    Par défaut sur `./archive.log`.
 
-Plusieurs manières sont envisageables pour détecter des changements dans un fichier. La manière la plus sûre consiste à conserver une copie du fichier et à comparer octet par octet avec un autre fichier. Néanmoins, cela pose deux problèmes principaux : tout d'abord, si les fichiers sont grands, cela peut prendre un temps non négligeable, ensuite, il est nécessaire de stocker constamment un fichier inutile autrement.
+`logStdout`
+:   En cas d'échec, redirige le motif à la sortie standard (`0`) ou pas (`1`).
 
-Nous avons donc décider de procéder par calcul d'une [somme de contrôle](https://fr.wikipedia.org/wiki/Somme_de_contr%C3%B4le) du dump, que l'on stocke dans le fichier `.prevChecksum`, et qui permet un suivi abstrait des modifications. Cela a plusieurs avantages : la comparaison prend toujours le même temps, l'espace de stockage nécessaire est négligeable, et cela permet d'avoir un historique en inscrivant la somme de contrôle dans les logs. De cette manière, s'il y a besoin d'utiliser des archives par la suite, on pourra vérifier l'intégrité de la sauvegarde avec sa somme de contrôle, en regardant dans l'historique des logs.
+    Par défaut sur `0`.
 
-Nous utilisons la fonction `sha256sum`, de GNU coreutils, qui permet de calculer la somme de contrôle sur 256 bits d'un fichier.
+`archiveURL`
+:   Définit l'emplacement de l'archive via une URL, accessible depuis l'ordinateur client.
 
-Il est amplement suffisant et d'usage d'utiliser 256 bits pour ce genre de situation, pour limiter au maximum le risque de collision on pourrait la calculer sur 512 bits, néanmoins pour des fichiers de taille importante ce calcul prendrai plus de temps et de ressources.
+### Serveur d'archivage
 
-## Envoi de mails
+`adresseArchivage`
+:   Adresse IP du serveur d'archivage, qui doit être accessible via SSH. Si le port 22 est utilisé, pas besoin de le préciser.
 
-Pour effectuer l'envoi des mails, on utilise [`mutt`], un logiciel libre permettant de se connecter simplement à un serveur SMTP.
+`usernameSSH`
+:   Nom d'utilisateur à utiliser sur le serveur d'archivage.
 
-Pour tester cette fonctionnalité, et dans la mesure où la plupart des fournisseurs mails ont arrêtés de fournir un accès SMTP à des applications comme [`mutt`] ([Google](https://support.google.com/accounts/answer/6010255?hl=fr), [Microsoft](https://support.microsoft.com/en-us/office/modern-authentication-methods-now-needed-to-continue-syncing-outlook-email-in-non-microsoft-email-apps-c5d65390-9676-4763-b41f-d7986499a90d), Yahoo^[Fonctionne théoriquement, mais nous n'avons pas réussi, et certains posts laissent entendre que cette fonctionnalité est régulièrement désactivée.]...), nous n'avons trouvé que qu'un fournisseur permettant d'accéder *gratuitement* à leurs serveurs par SMTP : [Zoho Mail](https://www.zoho.com/fr/mail/).
+`pathSSH`
+:   Chemin sur lequel enregistrer les archives sur le serveur. Le chemin doit déjà exister et être accessible en lecture et écriture pour l'utilisateur renseigné à `usernameSSH`.
 
-Nous avons donc créer une adresse Zoho, et l'envoi de mails et de pièces a été concluant, en fonction de la configuration renseignée (pièce jointe systématique, en cas d'échec...).
+`dureeConservation`
+:   Durée à partir de laquelle les anciennes archives seront supprimées, en jours.
 
-## Serveur Web
+    Par défaut sur `30`.
 
-Pour pouvoir télécharger l'archive contenant le dump SQL à tout instant, nous avons mis en place un serveur Web avec [Apache](https://httpd.apache.org/), accessible via HTTP (port 80).
+### Envoi de mails
 
-Pour cela, il suffit d'installer Apache et de le démarrer automatiquement. Ensuite, on place l'archive d'intérêt dans `/var/www/html` et on y accède avec l'adresse IP (e.g. : `http(s)://200.200.10.02/sql_dump.zip`).
+`envoyerMail`
+:   Dans quel cas envoyer un mail, jamais (`0`), en cas d'échec de l'exécution (`1`) ou toujours (`2`).
 
-## Serveur SSH
+    Par défaut sur `1`.
 
-Le serveur d'archivage doit être accessible via SSH, nous avons donc installé OpenSSH sur le serveur, il suffit de démarrer le démon SSH automatiquement puis d'accéder à la machine par le port 22 (par défaut).
+`mailDestinataires=(dest1@mail.org dest2@mail.org)`
+:   Destinataires du mail, séparés par des espaces. Si cette liste est vide, et peu importe la valeur de `envoyerMail`, le programme quittera sans envoyer de mail et sans erreur.
+
+`objSucces`
+:   Objet du mail à envoyer en cas de succès.
+
+    Par défaut sur `Archivage du $(date +'%d %B %Y') réussi`.
+
+`objEchec`
+:   Objet du mail à envoyer en cas d'échec.
+
+    Par défaut sur `Archivage du $(date +'%d %B %Y') échoué`.
+
+`joindreLog`
+:   Dans quelle situation joindre le fichier de logs complet, jamais (`0`), en cas d'échec (`1`) ou toujours (`2`).  
+    Attention, il s'agit du fichier de log entier. Le motif d'échec, si c'est le cas, est toujours indiqué dans le corps du message.
+	
+	Par défaut sur `1`.
+
+`muttrcUtilisateur`
+:   Utiliser le `~/.muttrc` de l'utilisateur (`0`) ou non (`1`).
+
+    Par défaut sur `1`.
+
+#### Serveur SMTP
+
+Ces options n'auront aucune incidence si `muttrcUtilisateur=0`.
+
+`serveurHote`
+:   Serveur SMTP qui gère l'envoi de mails.
+
+`port`
+:   Port sur lequel contacter le serveur. En général, on a :
+
+    - `25` : sans chiffrement
+	- `465` : chiffrement implicite (TLS/SSL)
+	- `587` : chiffrement explicite (STARTTLS)
+
+`mailEnvoyeur`
+:   Mail envoyeur des informations de l'utilitaire, enregistré sur le serveur renseigné dans `serveurHote`.
+
+`motDePasse`
+:   Mot de passe associé au mail pour s'identifier sur `serveurHote`.
+
+
+## Variable utilisée dans le script
+
+Toutes les variables du fichier de configuration sont utilisées dans le script. On ne définit qu'une variable dans le script, comme tel :
+
+```bash
+currentChecksum=$(sha256sum ./*.sql | cut -d ' ' -f1)
+```
+
+Cela permet de stocker la somme de contrôle du dump SQL en cours de traitement pour pouvoir la comparer avec la somme de contrôle sauvegardée.
 
 \newpage
-# Annexe {-}
+# Conclusion
 
-## Fichier de configuration (`archive.conf`)
+Le script produit est donc fonctionnel, et considère toutes les possiblités d'erreurs.
+
+On peut cependant envisager une amélioration de sécurité au niveau du stockage du mot de passe du compte mail (`$motDePasse`{.bash}), qui est stocké en clair. Pour cela, on peut utiliser une implémentation d'[OpenPGP](https://www.openpgp.org/), comme [GnuPG](https://gnupg.org/).  
+Cela nécessiterait néanmoins un travail de documentation supplémentaire.
+
+\vspace{100px}
+![Tux](tux.svg){width=200px}
+
+\newpage
+# Annexes {-}
+
+## Fichier de configuration (`archive.conf`) {.unlisted .unnumbered}
 
 ```bash {.numberLines}
 ###############################################
@@ -371,7 +447,7 @@ mailEnvoyeur="envoyeur@mail.org"
 motDePasse="mdp"
 ```
 
-## Script (`archive.sh`)
+## Script (`archive.sh`) {#script .unlisted .unnumbered}
 
 ```bash {.numberLines}
 #!/bin/bash
