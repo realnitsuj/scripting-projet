@@ -74,7 +74,7 @@ Voir la *Documentation utilisateur* pour générer et utiliser cette paire de cl
 
 Pour effectuer l'envoi des mails, on utilise [`mutt`], un logiciel libre permettant de se connecter simplement à un serveur SMTP.
 
-Pour tester cette fonctionnalité, et dans la mesure où la plupart des fournisseurs mails ont compliqués l'accès SMTP à des applications comme [`mutt`] ([Google](https://support.google.com/accounts/answer/6010255?hl=fr), [Microsoft](https://support.microsoft.com/en-us/office/modern-authentication-methods-now-needed-to-continue-syncing-outlook-email-in-non-microsoft-email-apps-c5d65390-9676-4763-b41f-d7986499a90d), Yahoo^[Fonctionne théoriquement, mais nous n'avons pas réussi, et certains posts laissent entendre que cette fonctionnalité est régulièrement désactivée.]...), nous n'avons trouvé que qu'un fournisseur permettant d'accéder facilement et *gratuitement* à leurs serveurs par SMTP : [Zoho Mail](https://www.zoho.com/fr/mail/).
+Pour tester cette fonctionnalité, et dans la mesure où la plupart des fournisseurs mails ont compliqué l'accès SMTP à des applications comme [`mutt`] ([Google](https://support.google.com/accounts/answer/6010255?hl=fr), [Microsoft](https://support.microsoft.com/en-us/office/modern-authentication-methods-now-needed-to-continue-syncing-outlook-email-in-non-microsoft-email-apps-c5d65390-9676-4763-b41f-d7986499a90d), Yahoo^[Fonctionne théoriquement, mais nous n'avons pas réussi, et certains posts laissent entendre que cette fonctionnalité est régulièrement désactivée.]...), nous n'avons trouvé que qu'un fournisseur permettant d'accéder facilement et *gratuitement* à leurs serveurs par SMTP : [Zoho Mail](https://www.zoho.com/fr/mail/).
 
 Nous avons donc créer une adresse Zoho, et l'envoi de mails et de pièces a été concluant, en fonction de la configuration renseignée (pièce jointe systématique, en cas d'échec...).
 
@@ -219,7 +219,7 @@ Cela permet de gérer simplement toutes les erreurs.
 
 ### Diagramme d'activité
 
-Notre script a le diagrammes d'activité suivant (voir le [script complet](#script)) :
+Notre script a le diagramme d'activité suivant (voir le [script complet](#script)) :
 
 ![Diagramme d'activité](./activite.svg)
 
