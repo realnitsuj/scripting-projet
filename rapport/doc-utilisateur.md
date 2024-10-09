@@ -132,11 +132,15 @@ Ces options n'auront aucune incidence si `muttrcUtilisateur=0`.
 
 Pour une exécution entièrement autonome, il est nécessaire d'authentifier sa machine par clés SSH auprès du serveur d'archivage. Pour cela, depuis la machine sur laquelle on va exécuter le script :
 
-1. `ssh-keygen -t rsa`{.bash}
+1. ```bash
+   ssh-keygen -t rsa
+   ```
 
    Un mot de passe est demandé, si aucun n'est voulu presser Entrée deux fois.
    
-2. `ssh-copy-id -i ~/.ssh/id_rsa.pub $username@$ip`{.bash}
+2. ```bash
+   ssh-copy-id -i ~/.ssh/id_rsa.pub $username@$ip
+   ```
 
    Avec `$username`{.bash} le nom d'utilisateur sur le serveur d'archivage et `$ip`{.bash} l'adresse IP du serveur. Le mot de passe de l'utilisateur du serveur doit être renseigné.
    
