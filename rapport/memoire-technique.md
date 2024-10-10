@@ -70,6 +70,20 @@ Nous avons également mis en place un système de [clés RSA](https://fr.wikiped
   
 Voir la *Documentation utilisateur* pour générer et utiliser cette paire de clés.
 
+#### Suppression automatique des archives trop anciennes
+
+Pour supprimer automatiquement les archives antérieures à une durée paramétrable par l'utilisateur (voir [plus loin](#config-serveur)), nous utilisons la commande `find`, de [GNU findutils](https://www.gnu.org/software/findutils/). La commande complète (depuis l'ordinateur client) est la suivante :
+
+```bash
+ssh "$usernameSSH@$adresseArchivage" "find $pathSSH -name *.tgz -type f -ctime +$dureeConservation -exec rm '{}' \; && exit"
+```
+
+Tout d'abord, on se connecte au serveur d'archivage, puis on cherche tous les fichiers (`-type f`) qui sont des archives `tgz` (`-name *.tgz`) dans le dossier des sauvegardes (`$pathSSH`), et qui ont été créée (`-ctime`) *au moins* il y a un certain nombre de jours, paramétrable (`+$dureeConservation`).
+
+On supprime ensuite tous les fichiers trouvés (`-exec rm '{}' \;`).
+
+Si l'opération est un succès, on ferme la connexion (`&& exit`).
+
 ## Envoi de mails
 
 Pour effectuer l'envoi des mails, on utilise [`mutt`], un logiciel libre permettant de se connecter simplement à un serveur SMTP.
@@ -272,7 +286,7 @@ Le fichier de configuration `archive.conf` comprend les variables suivantes :
 `archiveURL`
 :   Définit l'emplacement de l'archive via une URL, accessible depuis l'ordinateur client.
 
-### Serveur d'archivage
+### Serveur d'archivage {#config-serveur}
 
 `adresseArchivage`
 :   Adresse IP du serveur d'archivage, qui doit être accessible via SSH. Si le port 22 est utilisé, pas besoin de le préciser.
@@ -350,7 +364,8 @@ currentChecksum=$(sha256sum ./*.sql | cut -d ' ' -f1)
 
 Cela permet de stocker la somme de contrôle du dump SQL en cours de traitement pour pouvoir la comparer avec la somme de contrôle sauvegardée.
 
-\newpage
+***
+
 # Conclusion
 
 Le script produit est donc fonctionnel, et considère toutes les possiblités d'erreurs.
