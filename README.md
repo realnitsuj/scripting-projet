@@ -12,13 +12,13 @@
     - [x] Vérifier que le SQL n'est pas la même que la veille
     - [x] Vérifier la connexion avec le serveur de destination
     - [x] Vérifier que le transfert a bien fonctionné
-- [ ] Rédiger les rapports
-    - [ ] Mémoire technique
-        - [ ] Diagramme d'activité
-        - [ ] Schéma pour les serveurs
-        - [ ] Le reste
-    - [ ] Documentation utilisateur
-        - [ ] Voir si on détaille plus sur le Cron
+- [x] Rédiger les rapports
+    - [x] Mémoire technique
+        - [x] Diagramme d'activité
+        - [x] Schéma pour les serveurs
+        - [x] Le reste
+    - [x] Documentation utilisateur
+        - [x] Voir si on détaille plus sur le Cron
         - [x] Le reste
 
 # Structure
